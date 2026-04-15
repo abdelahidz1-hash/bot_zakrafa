@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Builder - Movable Back Button</title>
+    <title>App Builder - Buttons 35px</title>
     <style>
         body {
-            background-image: url('https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/2c4f40e9808ef5a6b20ee641ace2cfe5.jpg');
+            background-image: url('https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/db3a69875f0c96ca678f9fabcd413c32.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -15,23 +15,30 @@
             display: flex;
             font-family: 'Cairo', sans-serif;
             overflow: hidden;
-            /* منع السحب الافتراضي للمتصفح على الهاتف */
             touch-action: none;
         }
 
-        /* حاوية العناصر في الأسفل */
+        /* حاوية الأزرار اليمنى */
         .bottom-controls {
             position: fixed;
             bottom: 30px;
             right: 30px;
             display: flex;
             flex-direction: column;
-            align-items: center; 
-            gap: 12px; 
+            align-items: flex-end;
+            gap: 15px; 
             z-index: 999;
         }
 
-        /* حاوية التحميل */
+        /* ترتيب الأزرار في الأعلى وبجانب بعضهما */
+        .music-controls-stack {
+            display: flex;
+            flex-direction: row; 
+            gap: 10px;
+            align-items: center;
+            order: -1;
+        }
+
         .loading-wrapper {
             display: flex;
             align-items: center;
@@ -69,11 +76,11 @@
             min-width: 40px;
         }
 
-        /* زر السهم المضيء (الدخول) */
+        /* تعديل حجم زر الدخول ليصبح 35px */
         #actionBtn {
             display: none;
-            width: 60px;
-            height: 60px;
+            width: 35px;
+            height: 35px;
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid #00ffff;
             border-radius: 50%;
@@ -85,7 +92,6 @@
 
         #actionBtn img { width: 100%; filter: invert(1); }
 
-        /* نافذة الموقع (الغطاء الكامل) */
         #siteOverlay {
             display: none;
             position: fixed;
@@ -104,51 +110,45 @@
             border: none;
         }
 
-        /* زر الرجوع القابل للتحريك - الحجم 35px */
         #movableBackBtn {
             position: absolute;
-            top: 20px; /* الموضع الابتدائي */
+            top: 20px;
             left: 20px;
-            width: 35px; /* الحجم الجديد */
+            width: 35px;
             height: 35px;
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid #ff4500;
             border-radius: 50%;
-            cursor: move; /* مؤشر شكل السحب */
+            cursor: move;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10001;
             box-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
-            /* منع منع اختيار العنصر أثناء السحب */
             user-select: none;
-            -webkit-user-drag: none;
             touch-action: none;
         }
 
-        #movableBackBtn img {
-            width: 25px; /* حجم الأيقونة بالداخل */
-            height: 25px;
-            filter: invert(1);
-            pointer-events: none; /* منع الأيقونة من تداخل الأحداث */
-        }
+        #movableBackBtn img { width: 25px; height: 25px; filter: invert(1); pointer-events: none; }
 
-        /* زر الصوت */
-        .mic-btn-medium {
-            width: 55px;
-            height: 55px;
-            background: #1a1a1a;
+        /* تعديل حجم أزرار الموسيقى والرفع لتصبح 35px */
+        .circle-btn {
+            width: 35px;
+            height: 35px;
+            background: rgba(26, 26, 26, 0.9);
             border: 2px solid #ff4500;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 999;
+            transition: all 0.3s ease;
         }
 
-        .mic-btn-medium img { width: 55%; filter: invert(1); }
-        .mic-btn-medium.playing { animation: pulse-med 1.5s infinite; border-color: #00ffff; }
+        .circle-btn img { width: 60%; filter: invert(1); }
+        .playing { animation: pulse-med 1.5s infinite; border-color: #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); }
+
+        #musicUpload { display: none; }
 
         @keyframes pulse-med { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -165,9 +165,16 @@
     </div>
 
     <div class="bottom-controls">
-        <button class="mic-btn-medium" id="playBtn" onclick="toggleMusic(event)">
-            <img id="iconImg" src="https://images.icon-icons.com/1152/PNG/512/1486506271-music-mute-sound-volume-speaker-audio-player_81465.png">
-        </button>
+        <div class="music-controls-stack">
+            <label for="musicUpload" class="circle-btn" id="uploadBtn">
+                <img src="https://images.icon-icons.com/1150/PNG/512/1486504817-data-doc-folder-data-storage-file-storage-open_81345.png">
+            </label>
+            <input type="file" id="musicUpload" accept="audio/*">
+
+            <button class="circle-btn" id="playBtn" onclick="toggleMusic(event)">
+                <img id="iconImg" src="https://images.icon-icons.com/2449/PNG/512/headphones_head_set_chat_live_support_icon_148822.png">
+            </button>
+        </div>
 
         <div class="loading-wrapper" id="loaderBox">
             <div class="pro-loader-container"><div class="pro-progress-bar" id="myBar"></div></div>
@@ -175,7 +182,7 @@
         </div>
 
         <button id="actionBtn" onclick="openSite()">
-            <img src="https://images.icon-icons.com/4230/PNG/96/left_circle_arrow_icon_263625.png">
+            <img src="https://images.icon-icons.com/3298/PNG/512/entry_door_open_icon_208681.png">
         </button>
     </div>
 
@@ -185,17 +192,25 @@
 
     <script>
         const music = document.getElementById('bgMusic');
+        const playBtn = document.getElementById('playBtn');
+        const musicUpload = document.getElementById('musicUpload');
         const bar = document.getElementById('myBar');
         const percentText = document.getElementById('percentText');
         const loaderBox = document.getElementById('loaderBox');
         const actionBtn = document.getElementById('actionBtn');
         const siteOverlay = document.getElementById('siteOverlay');
         const siteFrame = document.getElementById('siteFrame');
-        const iconImg = document.getElementById('iconImg');
-        const playBtn = document.getElementById('playBtn');
         const backBtn = document.getElementById('movableBackBtn');
 
-        // وظيفة التحميل
+        musicUpload.addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const fileURL = URL.createObjectURL(files[0]);
+                music.src = fileURL;
+                playAudio();
+            }
+        });
+
         function moveLoader() {
             let width = 0;
             let id = setInterval(() => {
@@ -211,7 +226,6 @@
             }, 600);
         }
 
-        // فتح وإغلاق الموقع
         function openSite() {
             siteFrame.src = "https://abdelahidz1-hash.github.io/BOT-ZA5RAFA-/";
             siteOverlay.style.display = 'block';
@@ -220,99 +234,56 @@
         function closeSite() {
             siteOverlay.style.display = 'none';
             siteFrame.src = "";
-            // إعادة تعيين موضع الزر عند الإغلاق (اختياري)
-            backBtn.style.top = "20px";
-            backBtn.style.left = "20px";
         }
 
         window.onload = moveLoader;
 
-        // --- كود برمجة ميزة تحريك الزر (Drag and Drop) ---
         let isDragging = false;
-        let currentX;
-        let currentY;
-        let initialX;
-        let initialY;
-        let xOffset = 0;
-        let yOffset = 0;
+        let currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
 
-        // دعم الكمبيوتر (الماوس)
         backBtn.addEventListener("mousedown", dragStart);
-        document.addEventListener("mousemove", drag);
-        document.addEventListener("mouseup", dragEnd);
-
-        // دعم الهاتف (اللمس)
         backBtn.addEventListener("touchstart", dragStart);
+        document.addEventListener("mousemove", drag);
         document.addEventListener("touchmove", drag);
+        document.addEventListener("mouseup", dragEnd);
         document.addEventListener("touchend", dragEnd);
 
         function dragStart(e) {
-            // التمييز بين النقر للإغلاق والسحب
             isDragging = true;
-            backBtn.style.transition = "none"; // إيقاف التحريك السلس أثناء السحب
-
-            if (e.type === "touchstart") {
-                initialX = e.touches[0].clientX - xOffset;
-                initialY = e.touches[0].clientY - yOffset;
-            } else {
-                initialX = e.clientX - xOffset;
-                initialY = e.clientY - yOffset;
-            }
+            backBtn.style.transition = "none";
+            const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
+            initialX = clientX - xOffset;
+            initialY = clientY - yOffset;
         }
 
         function drag(e) {
             if (isDragging) {
                 e.preventDefault();
-                
-                if (e.type === "touchmove") {
-                    currentX = e.touches[0].clientX - initialX;
-                    currentY = e.touches[0].clientY - initialY;
-                } else {
-                    currentX = e.clientX - initialX;
-                    currentY = e.clientY - initialY;
-                }
-
+                const clientX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type === "touchmove" ? e.touches[0].clientY : e.clientY;
+                currentX = clientX - initialX;
+                currentY = clientY - initialY;
                 xOffset = currentX;
                 yOffset = currentY;
-
-                setTranslate(currentX, currentY, backBtn);
+                backBtn.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
             }
         }
 
-        function setTranslate(xPos, yPos, el) {
-            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
-        }
-
-        function dragEnd(e) {
+        function dragEnd() {
             if (!isDragging) return;
-            
             initialX = currentX;
             initialY = currentY;
             isDragging = false;
-            backBtn.style.transition = "transform 0.2s ease-out"; // إعادة التحريك السلس عند الإفلات
-
-            // التمييز بين نهاية السحب وبين النقر (إذا لم يتحرك الزر، فهو نقرة)
-            if (Math.abs(xOffset) < 5 && Math.abs(yOffset) < 5) {
-                // يعتبر نقرة، لا شيء يحدث هنا لأننا سنستخدم onclick
-            }
+            backBtn.style.transition = "transform 0.2s ease-out";
         }
 
-        // استخدام click للتعامل مع الإغلاق لضمان عدم تداخله مع نهاية السحب
-        backBtn.addEventListener('click', function(e) {
-            // إذا كنا نقوم بالسحب، لا تغلق الصفحة
-            if (Math.abs(xOffset) > 5 || Math.abs(yOffset) > 5) {
-               // xOffset = 0; yOffset = 0; // إعادة تعيين لمرة قادمة
-               // setTranslate(0, 0, backBtn);
-            } else {
-                closeSite();
-            }
-            // إعادة تعيين الأوفست لجعل النقر القادم نظيفاً
-             xOffset = 0; yOffset = 0; 
-             setTranslate(0, 0, backBtn);
+        backBtn.addEventListener('click', function() {
+            if (Math.abs(xOffset) < 5 && Math.abs(yOffset) < 5) closeSite();
+            xOffset = 0; yOffset = 0;
+            backBtn.style.transform = `translate3d(0, 0, 0)`;
         });
-        // ---------------------------------------------------
 
-        // إدارة الصوت
         function startOnFirstClick() { 
             if (!window.hasStarted) { playAudio(); window.hasStarted = true; } 
         }
@@ -325,15 +296,12 @@
         function playAudio() { 
             music.play(); 
             playBtn.classList.add('playing'); 
-            iconImg.src = "https://images.icon-icons.com/1152/PNG/96/1486506275-high-loud-music-on-sound-speaker-volume_81461.png"; 
         }
 
         function pauseAudio() { 
             music.pause(); 
             playBtn.classList.remove('playing'); 
-            iconImg.src = "https://images.icon-icons.com/1152/PNG/512/1486506271-music-mute-sound-volume-speaker-audio-player_81465.png"; 
         }
     </script>
 </body>
-    </html>
-            
+</html>
