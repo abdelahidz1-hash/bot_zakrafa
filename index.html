@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Builder - Movable Back Button</title>
     <style>
         body {
             background-image: url('https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/2c4f40e9808ef5a6b20ee641ace2cfe5.jpg');
@@ -12,10 +13,13 @@
             margin: 0;
             height: 100vh;
             display: flex;
-            font-family: sans-serif;
+            font-family: 'Cairo', sans-serif;
             overflow: hidden;
+            /* منع السحب الافتراضي للمتصفح على الهاتف */
+            touch-action: none;
         }
 
+        /* حاوية العناصر في الأسفل */
         .bottom-controls {
             position: fixed;
             bottom: 30px;
@@ -27,6 +31,7 @@
             z-index: 999;
         }
 
+        /* حاوية التحميل */
         .loading-wrapper {
             display: flex;
             align-items: center;
@@ -37,6 +42,7 @@
             border: 1px solid rgba(255, 69, 0, 0.5);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
+            transition: opacity 0.5s ease;
         }
 
         .pro-loader-container {
@@ -63,6 +69,7 @@
             min-width: 40px;
         }
 
+        /* زر السهم المضيء (الدخول) */
         #actionBtn {
             display: none;
             width: 60px;
@@ -78,6 +85,7 @@
 
         #actionBtn img { width: 100%; filter: invert(1); }
 
+        /* نافذة الموقع (الغطاء الكامل) */
         #siteOverlay {
             display: none;
             position: fixed;
@@ -87,6 +95,7 @@
             height: 100%;
             background: #000;
             z-index: 10000;
+            animation: fadeIn 0.5s ease;
         }
 
         #siteFrame {
@@ -95,37 +104,36 @@
             border: none;
         }
 
-        /* زر الرجوع المحدث */
-        .back-btn {
+        /* زر الرجوع القابل للتحريك - الحجم 35px */
+        #movableBackBtn {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            width: 40px; /* الحجم المطلوب 40 بكسل */
-            height: 40px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1.5px solid #ff4500;
+            top: 20px; /* الموضع الابتدائي */
+            left: 20px;
+            width: 35px; /* الحجم الجديد */
+            height: 35px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff4500;
             border-radius: 50%;
-            cursor: pointer;
+            cursor: move; /* مؤشر شكل السحب */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10001;
-            padding: 0;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
+            /* منع منع اختيار العنصر أثناء السحب */
+            user-select: none;
+            -webkit-user-drag: none;
+            touch-action: none;
         }
 
-        .back-btn img {
-            width: 70%; /* حجم الصورة داخل الـ 40 بكسل */
-            height: auto;
-            filter: invert(1); /* جعل السهم أبيض */
+        #movableBackBtn img {
+            width: 25px; /* حجم الأيقونة بالداخل */
+            height: 25px;
+            filter: invert(1);
+            pointer-events: none; /* منع الأيقونة من تداخل الأحداث */
         }
 
-        .back-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 10px #ff4500;
-        }
-
+        /* زر الصوت */
         .mic-btn-medium {
             width: 55px;
             height: 55px;
@@ -136,6 +144,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 999;
         }
 
         .mic-btn-medium img { width: 55%; filter: invert(1); }
@@ -143,14 +152,15 @@
 
         @keyframes pulse-med { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body onclick="startOnFirstClick()">
 
     <div id="siteOverlay">
-        <button class="back-btn" onclick="closeSite()">
-            <img src="https://images.icon-icons.com/4230/PNG/512/right_circle_arrow_icon_263631.png" alt="Back">
-        </button>
+        <div id="movableBackBtn">
+            <img src="https://images.icon-icons.com/4230/PNG/512/right_circle_arrow_icon_263631.png" alt="رجوع">
+        </div>
         <iframe id="siteFrame" src=""></iframe>
     </div>
 
@@ -183,7 +193,9 @@
         const siteFrame = document.getElementById('siteFrame');
         const iconImg = document.getElementById('iconImg');
         const playBtn = document.getElementById('playBtn');
+        const backBtn = document.getElementById('movableBackBtn');
 
+        // وظيفة التحميل
         function moveLoader() {
             let width = 0;
             let id = setInterval(() => {
@@ -199,22 +211,129 @@
             }, 600);
         }
 
+        // فتح وإغلاق الموقع
         function openSite() {
-            siteFrame.src = "https://abdelahidz1-hash.github.io/bot_zakrafa/";
+            siteFrame.src = "https://abdelahidz1-hash.github.io/BOT-ZA5RAFA-/";
             siteOverlay.style.display = 'block';
         }
 
         function closeSite() {
             siteOverlay.style.display = 'none';
             siteFrame.src = "";
+            // إعادة تعيين موضع الزر عند الإغلاق (اختياري)
+            backBtn.style.top = "20px";
+            backBtn.style.left = "20px";
         }
 
         window.onload = moveLoader;
-        function startOnFirstClick() { if (!window.hasStarted) { playAudio(); window.hasStarted = true; } }
-        function toggleMusic(event) { event.stopPropagation(); music.paused ? playAudio() : pauseAudio(); }
-        function playAudio() { music.play(); playBtn.classList.add('playing'); iconImg.src = "https://images.icon-icons.com/1152/PNG/96/1486506275-high-loud-music-on-sound-speaker-volume_81461.png"; }
-        function pauseAudio() { music.pause(); playBtn.classList.remove('playing'); iconImg.src = "https://images.icon-icons.com/1152/PNG/512/1486506271-music-mute-sound-volume-speaker-audio-player_81465.png"; }
+
+        // --- كود برمجة ميزة تحريك الزر (Drag and Drop) ---
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        // دعم الكمبيوتر (الماوس)
+        backBtn.addEventListener("mousedown", dragStart);
+        document.addEventListener("mousemove", drag);
+        document.addEventListener("mouseup", dragEnd);
+
+        // دعم الهاتف (اللمس)
+        backBtn.addEventListener("touchstart", dragStart);
+        document.addEventListener("touchmove", drag);
+        document.addEventListener("touchend", dragEnd);
+
+        function dragStart(e) {
+            // التمييز بين النقر للإغلاق والسحب
+            isDragging = true;
+            backBtn.style.transition = "none"; // إيقاف التحريك السلس أثناء السحب
+
+            if (e.type === "touchstart") {
+                initialX = e.touches[0].clientX - xOffset;
+                initialY = e.touches[0].clientY - yOffset;
+            } else {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                
+                if (e.type === "touchmove") {
+                    currentX = e.touches[0].clientX - initialX;
+                    currentY = e.touches[0].clientY - initialY;
+                } else {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                }
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, backBtn);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+        }
+
+        function dragEnd(e) {
+            if (!isDragging) return;
+            
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+            backBtn.style.transition = "transform 0.2s ease-out"; // إعادة التحريك السلس عند الإفلات
+
+            // التمييز بين نهاية السحب وبين النقر (إذا لم يتحرك الزر، فهو نقرة)
+            if (Math.abs(xOffset) < 5 && Math.abs(yOffset) < 5) {
+                // يعتبر نقرة، لا شيء يحدث هنا لأننا سنستخدم onclick
+            }
+        }
+
+        // استخدام click للتعامل مع الإغلاق لضمان عدم تداخله مع نهاية السحب
+        backBtn.addEventListener('click', function(e) {
+            // إذا كنا نقوم بالسحب، لا تغلق الصفحة
+            if (Math.abs(xOffset) > 5 || Math.abs(yOffset) > 5) {
+               // xOffset = 0; yOffset = 0; // إعادة تعيين لمرة قادمة
+               // setTranslate(0, 0, backBtn);
+            } else {
+                closeSite();
+            }
+            // إعادة تعيين الأوفست لجعل النقر القادم نظيفاً
+             xOffset = 0; yOffset = 0; 
+             setTranslate(0, 0, backBtn);
+        });
+        // ---------------------------------------------------
+
+        // إدارة الصوت
+        function startOnFirstClick() { 
+            if (!window.hasStarted) { playAudio(); window.hasStarted = true; } 
+        }
+
+        function toggleMusic(event) { 
+            event.stopPropagation(); 
+            music.paused ? playAudio() : pauseAudio(); 
+        }
+
+        function playAudio() { 
+            music.play(); 
+            playBtn.classList.add('playing'); 
+            iconImg.src = "https://images.icon-icons.com/1152/PNG/96/1486506275-high-loud-music-on-sound-speaker-volume_81461.png"; 
+        }
+
+        function pauseAudio() { 
+            music.pause(); 
+            playBtn.classList.remove('playing'); 
+            iconImg.src = "https://images.icon-icons.com/1152/PNG/512/1486506271-music-mute-sound-volume-speaker-audio-player_81465.png"; 
+        }
     </script>
 </body>
-  </html>
-  
+    </html>
+            
