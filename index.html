@@ -34,14 +34,12 @@
         .loading-text { color: #fff; margin-bottom: 10px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .hint-text { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 8px; }
 
-        /* واجهة الدخول - شفافة تماماً بدون ضباب */
+        /* واجهة الدخول */
         #login-interface { display: none; }
         .glass-panel {
             width: 280px; 
-            background: rgba(255, 255, 255, 0.05); /* خلفية خفيفة جداً */
-            backdrop-filter: none; /* تم مسح الضبابية هنا */
-            -webkit-backdrop-filter: none;
-            border: 1.5px solid rgba(255, 255, 255, 0.4); /* حدود واضحة لتمييز المربع */
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1.5px solid rgba(255, 255, 255, 0.4); 
             border-radius: 25px; 
             text-align: center; 
             padding: 25px 0;
@@ -63,19 +61,25 @@
         }
         .panel-video { width: 100%; display: block; }
         
-        .input-group { padding: 0 25px; margin-bottom: 15px; }
+        /* تعديل حجم الحقول هنا */
+        .input-group { 
+            padding: 0 40px; /* زيادة الهامش الجانبي لتصغير العرض */
+            margin-bottom: 12px; 
+        }
         input {
-            width: 100%; padding: 12px; 
+            width: 100%; 
+            padding: 8px 10px; /* تقليل التباعد الداخلي (الطول) */
+            font-size: 13px; /* تصغير الخط قليلاً */
             background: rgba(0, 0, 0, 0.6); 
             border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-radius: 12px;
+            border-radius: 10px;
             color: #fff; font-family: 'Cairo', sans-serif; 
             text-align: center; outline: none;
         }
-        input::placeholder { color: rgba(255,255,255,0.7); }
+        input::placeholder { color: rgba(255,255,255,0.6); }
 
-        .status-msg { color: #00ff00; font-size: 13px; margin-top: 5px; display: none; font-weight: bold; text-shadow: 0 0 5px #000; }
-        .waiting-msg { color: #ffae00; font-size: 12px; margin-top: 5px; display: none; font-weight: bold; text-shadow: 0 0 5px #000; }
+        .status-msg { color: #00ff00; font-size: 12px; margin-top: 5px; display: none; font-weight: bold; text-shadow: 0 0 5px #000; }
+        .waiting-msg { color: #ffae00; font-size: 11px; margin-top: 5px; display: none; font-weight: bold; text-shadow: 0 0 5px #000; }
     </style>
 </head>
 <body>
@@ -173,5 +177,4 @@
         }, { once: true });
     </script>
 </body>
-    </html>
-    
+</html>
