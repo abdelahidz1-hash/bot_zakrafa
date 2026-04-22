@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOT ZA5RAFA - Auto Login</title>
+    <title>BOT ZA5RAFA - Google Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     
     <style>
         body { 
@@ -40,7 +37,7 @@
         /* واجهة الدخول */
         #login-interface { display: none; }
         .glass-panel {
-            width: 280px; 
+            width: 300px; 
             background: rgba(255, 255, 255, 0.05); 
             border: 1.5px solid rgba(255, 255, 255, 0.4); 
             border-radius: 25px; 
@@ -50,13 +47,22 @@
             position: relative;
         }
         
-        .top-icon {
-            width: 35px; height: 35px; 
-            border-radius: 10px; 
-            margin-bottom: 12px; 
-            border: 1.5px solid rgba(255,255,255,0.5);
-            object-fit: cover;
+        .top-header {
+            display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 12px;
         }
+
+        .top-icon {
+            width: 35px; height: 35px; border-radius: 10px; 
+            border: 1.5px solid rgba(255,255,255,0.5); object-fit: cover;
+        }
+
+        .like-container { display: flex; align-items: center; gap: 5px; }
+        .like-btn {
+            width: 28px; height: 28px; cursor: pointer;
+            transition: transform 0.2s; filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.5));
+        }
+        .like-btn.disabled { opacity: 0.4; cursor: default; filter: grayscale(1); }
+        .like-count { color: #fff; font-size: 13px; font-weight: 700; }
 
         .video-wrapper { 
             width: 86%; margin: 0 auto 20px auto; 
@@ -64,48 +70,24 @@
             border: 1px solid rgba(255,255,255,0.3); 
         }
         .panel-video { width: 100%; display: block; }
-        
-        .input-group { 
-            padding: 0 40px; 
-            margin-bottom: 12px; 
-        }
-        input {
-            width: 100%; 
-            padding: 8px 10px; 
-            font-size: 13px; 
-            background: rgba(0, 0, 0, 0.6); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-radius: 10px;
-            color: #fff; font-family: 'Cairo', sans-serif; 
-            text-align: center; outline: none;
-        }
 
-        .status-msg { color: #00ff00; font-size: 12px; margin-top: 5px; display: none; font-weight: bold; }
-        .waiting-msg { color: #ffae00; font-size: 11px; margin-top: 5px; display: none; font-weight: bold; }
+        /* زر جوجل الدائري بحجم 30 بكسل */
+        .google-btn {
+            background: #fff; border: none; 
+            width: 30px; height: 30px; /* الحجم المطلوب */
+            border-radius: 50%; 
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto; transition: 0.3s;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+            padding: 0;
+        }
+        .google-btn:hover { 
+            transform: scale(1.2); 
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        .google-btn img { width: 18px; height: 18px; } /* حجم الأيقونة متناسب مع 30 بكسل */
 
-        /* قسم الإعجابات */
-        .like-section {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-        .like-btn {
-            width: 35px;
-            height: 35px;
-            cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.5));
-        }
-        .like-btn.disabled { opacity: 0.5; cursor: default; filter: grayscale(1); }
-        .like-btn:active:not(.disabled) { transform: scale(1.3); }
-        .like-count {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 700;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
+        .status-msg { color: #00ff00; font-size: 12px; margin-top: 10px; display: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -123,52 +105,87 @@
     </div>
 
     <div id="login-interface" class="glass-panel">
-        <img src="https://res.cloudinary.com/dpggetoyh/image/upload/v1776595066/a7e855b8-78b0-40b2-8487-e4cf76587e22_xfqhb3.jpg" class="top-icon" alt="icon">
+        <div class="top-header">
+            <img src="https://res.cloudinary.com/dpggetoyh/image/upload/v1776595066/a7e855b8-78b0-40b2-8487-e4cf76587e22_xfqhb3.jpg" class="top-icon" alt="icon">
+            <div class="like-container">
+                <img src="https://cdn-icons-png.flaticon.com/128/12096/12096301.png" id="likeBtnIcon" class="like-btn" onclick="addLike()" alt="Like">
+                <span class="like-count" id="countDisplay">0</span>
+            </div>
+        </div>
         
         <div class="video-wrapper">
             <video id="loginVid" class="panel-video" loop muted playsinline>
                 <source src="https://res.cloudinary.com/dpggetoyh/video/upload/v1776416800/VID_20260417_100508_015_j8xfcl.mp4" type="video/mp4">
             </video>
         </div>
-        <div class="input-group">
-            <input type="text" placeholder="اسم المستخدم" id="loginUser">
-        </div>
-        <div class="input-group">
-            <input type="password" placeholder="كلمة المرور" id="loginPass" oninput="startAutoLoginTimer()">
-            <div id="waitMsg" class="waiting-msg">جاري المعالجة... انتظر 5 ثوانٍ</div>
-            <div id="redirectMsg" class="status-msg">✅ تم التحقق.. جاري الدخول</div>
-        </div>
 
-        <div class="like-section">
-            <img src="https://cdn-icons-png.flaticon.com/128/17996/17996538.png" id="likeBtnIcon" class="like-btn" onclick="addLike()" alt="Like">
-            <span class="like-count" id="countDisplay">0</span>
-        </div>
+        <button class="google-btn" onclick="loginWithGoogle()" title="تسجيل الدخول بجوجل">
+            <img src="https://cdn-icons-png.flaticon.com/128/300/300221.png" alt="google">
+        </button>
+        
+        <div id="redirectMsg" class="status-msg">✅ تم الدخول.. جاري تحويلك</div>
     </div>
 
-    <script>
-        // --- إعدادات Firebase ---
-        const firebaseConfig = {
-            databaseURL: "https://bot-za5rafa-default-rtdb.firebaseio.com/"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const likesRef = database.ref('globalLikes');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, onValue, runTransaction, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // جلب التحديثات من السيرفر فوراً
-        likesRef.on('value', (snapshot) => {
+        const firebaseConfig = {
+            apiKey: "AIzaSyD8FB2radBFN7NVC4JUX_JAjUk93glXfDo",
+            authDomain: "bot-za5rafa.firebaseapp.com",
+            databaseURL: "https://bot-za5rafa-default-rtdb.firebaseio.com",
+            projectId: "bot-za5rafa",
+            storageBucket: "bot-za5rafa.firebasestorage.app",
+            messagingSenderId: "747795672156",
+            appId: "1:747795672156:web:938283330b06a7b0f6ca99",
+            measurementId: "G-7BBZ0JLECB"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const provider = new GoogleAuthProvider();
+
+        const likesRef = ref(database, 'globalLikes');
+        onValue(likesRef, (snapshot) => {
             const count = snapshot.val() || 0;
             document.getElementById('countDisplay').innerText = count.toLocaleString();
         });
 
-        // نظام شريط التحميل
+        window.loginWithGoogle = function() {
+            signInWithPopup(auth, provider).then((result) => {
+                const user = result.user;
+                set(ref(database, 'users/' + user.uid), {
+                    name: user.displayName,
+                    email: user.email,
+                    lastSeen: new Date().toISOString()
+                });
+                
+                document.getElementById('redirectMsg').style.display = 'block';
+                setTimeout(() => {
+                    window.location.href = "https://abdelahidz1-hash.github.io/BOT-ZA5RAFA-/";
+                }, 1500);
+            }).catch(err => alert("فشل الدخول: " + err.message));
+        }
+
+        window.addLike = function() {
+            if (!localStorage.getItem('userLikedBot')) {
+                runTransaction(likesRef, (current) => {
+                    return (current || 0) + 1;
+                });
+                localStorage.setItem('userLikedBot', 'true');
+                checkLikeStatus();
+            }
+        }
+    </script>
+
+    <script>
         let progress = 0;
         let speed = 40; 
         const progressBar = document.getElementById('progress-fill');
         const percentageText = document.getElementById('percentage');
-        let timer = setInterval(move, speed);
-
-        function move() {
+        let timer = setInterval(() => {
             if (progress >= 100) {
                 clearInterval(timer);
                 showLogin();
@@ -177,14 +194,9 @@
                 progressBar.style.width = progress + '%';
                 percentageText.innerText = progress + '%';
             }
-        }
+        }, speed);
 
-        function speedUp() {
-            if (progress < 100) {
-                clearInterval(timer);
-                timer = setInterval(move, 5); 
-            }
-        }
+        function speedUp() { progress += 10; if(progress > 100) progress = 100; }
 
         function showLogin() {
             document.getElementById('loader-container').style.display = 'none';
@@ -193,51 +205,12 @@
             checkLikeStatus();
         }
 
-        // --- وظيفة الإعجاب (مرة واحدة لكل مستخدم) ---
-        function addLike() {
-            const hasLiked = localStorage.getItem('userLikedBot');
-            if (!hasLiked) {
-                likesRef.transaction((currentCount) => {
-                    return (currentCount || 0) + 1;
-                });
-                localStorage.setItem('userLikedBot', 'true');
-                checkLikeStatus();
-            }
-        }
-
         function checkLikeStatus() {
             if (localStorage.getItem('userLikedBot')) {
                 document.getElementById('likeBtnIcon').classList.add('disabled');
-                document.getElementById('likeBtnIcon').onclick = null;
             }
         }
-
-        // نظام تسجيل الدخول التلقائي
-        let loginTimeout; 
-        function startAutoLoginTimer() {
-            const pass = document.getElementById('loginPass').value;
-            const waitMsg = document.getElementById('waitMsg');
-            const redirectMsg = document.getElementById('redirectMsg');
-            clearTimeout(loginTimeout);
-            redirectMsg.style.display = 'none';
-            if (pass.length > 6) {
-                waitMsg.style.display = 'block';
-                loginTimeout = setTimeout(() => {
-                    waitMsg.style.display = 'none';
-                    redirectMsg.style.display = 'block';
-                    setTimeout(() => {
-                        window.location.href = "https://abdelahidz1-hash.github.io/BOT-ZA5RAFA-/"; 
-                    }, 1000);
-                }, 5000); 
-            } else {
-                waitMsg.style.display = 'none';
-            }
-        }
-
-        document.addEventListener('click', () => {
-            document.getElementById('loginVid').muted = false;
-        }, { once: true });
     </script>
 </body>
-    </html>
-    
+                    </html>
+                    
