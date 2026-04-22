@@ -1,28 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>BOT ZA5RAFA </title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOT ZA5RAFA - Google Login</title>
+    <title>𝑩𝑶𝑻 𝒁𝑨5𝑹𝑨𝑭𝑨 - الدخول والزخرفة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        body { 
-            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
-            font-family: 'Cairo', sans-serif; overflow: hidden; background: #000; 
+        /* التنسيقات المشتركة والمتغيرات */
+        :root {
+            --bg: #080810;
+            --surface: rgba(16, 16, 30, 0.85);
+            --card: rgba(20, 20, 42, 0.85);
+            --border: rgba(255, 255, 255, 0.1);
+            --orange: #ff5c00;
+            --text: #f0f0ff;
+            --bot-bubble: rgba(255, 255, 255, 0.07);
         }
-        
+
+        body { 
+            margin: 0; height: 100vh; font-family: 'Cairo', sans-serif; overflow: hidden; background: #000; 
+            color: var(--text);
+        }
+
+        /* طبقة الخلفية لوجهة الدخول */
         .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .bg-image { 
             position: absolute; width: 100%; height: 100%; 
@@ -32,9 +33,12 @@
         }
 
         /* شريط التحميل */
-        #loader-container { text-align: center; z-index: 20; width: 80%; max-width: 400px; }
+        #loader-container { 
+            height: 100vh; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; z-index: 20; 
+        }
         .progress-wrapper {
-            width: 100%; height: 20px; background: rgba(255, 255, 255, 0.1);
+            width: 80%; max-width: 400px; height: 20px; background: rgba(255, 255, 255, 0.1);
             border-radius: 10px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.3);
             cursor: pointer; position: relative;
         }
@@ -43,98 +47,92 @@
             box-shadow: 0 0 15px #ff4500; transition: width 0.1s linear;
         }
         .loading-text { color: #fff; margin-bottom: 10px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .hint-text { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 8px; }
 
         /* واجهة الدخول */
-        #login-interface { display: none; }
+        #login-interface { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
         .glass-panel {
-            width: 300px; 
-            background: rgba(255, 255, 255, 0.05); 
-            border: 1.5px solid rgba(255, 255, 255, 0.4); 
-            border-radius: 25px; 
-            text-align: center; 
-            padding: 25px 0;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            position: relative;
+            width: 300px; background: rgba(255, 255, 255, 0.05); 
+            border: 1.5px solid rgba(255, 255, 255, 0.4); border-radius: 25px; 
+            text-align: center; padding: 25px 0; box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
-        
-        .top-header {
-            display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 12px;
-        }
-
-        .top-icon {
-            width: 35px; height: 35px; border-radius: 10px; 
-            border: 1.5px solid rgba(255,255,255,0.5); object-fit: cover;
-        }
-
-        .like-container { display: flex; align-items: center; gap: 5px; }
-        .like-btn {
-            width: 28px; height: 28px; cursor: pointer;
-            transition: transform 0.2s; filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.5));
-        }
-        .like-btn.disabled { opacity: 0.4; cursor: default; filter: grayscale(1); }
-        .like-count { color: #fff; font-size: 13px; font-weight: 700; }
-
-        .video-wrapper { 
-            width: 86%; margin: 0 auto 20px auto; 
-            border-radius: 15px; overflow: hidden; 
-            border: 1px solid rgba(255,255,255,0.3); 
-        }
-        .panel-video { width: 100%; display: block; }
-
-        /* زر جوجل الدائري بحجم 30 بكسل */
         .google-btn {
-            background: #fff; border: none; 
-            width: 30px; height: 30px; 
-            border-radius: 50%; 
+            background: #fff; border: none; width: 30px; height: 30px; border-radius: 50%; 
             cursor: pointer; display: flex; align-items: center; justify-content: center;
             margin: 0 auto; transition: 0.3s;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-            padding: 0;
         }
-        .google-btn:hover { 
-            transform: scale(1.2); 
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
-        .google-btn img { width: 18px; height: 18px; }
 
-        .status-msg { color: #00ff00; font-size: 12px; margin-top: 10px; display: none; font-weight: bold; }
+        /* واجهة البوت (مخفية في البداية) */
+        #bot-interface { 
+            display: none; height: 100vh; flex-direction: column;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+                        url('https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/0f77bc3b090c6d61e6793f96e92d25e7.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+
+        /* تنسيقات كود البوت الأصلي */
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--surface); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); z-index: 1001; }
+        .chat { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+        .row { display: flex; align-items: flex-end; gap: 10px; animation: popIn .3s ease-out both; }
+        .row.bot .bubble { background: var(--bot-bubble); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text); backdrop-filter: blur(8px); }
+        .row.user .bubble { background: transparent; color: var(--text); font-weight: 700; padding: 14px 0; }
+        .bubble { max-width: 95%; padding: 14px 18px; border-radius: 20px; font-size: .95rem; line-height: 1.6; }
+        .input-area { display: flex; gap: 12px; padding: 18px 20px; background: var(--surface); border-top: 1px solid var(--border); }
+        input#inp { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 16px; padding: 14px 20px; color: var(--text); outline: none; }
+        .send-btn { width: 56px; height: 56px; border-radius: 16px; border: none; background: var(--orange); color: #fff; cursor: pointer; }
+        .style-row { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .cp { width: 35px; height: 35px; border-radius: 8px; border: 1px solid var(--orange); background: transparent; cursor: pointer; padding: 5px; }
+        .cp img { width: 100%; filter: invert(47%) sepia(97%) saturate(2335%) hue-rotate(3deg) brightness(101%) contrast(105%); }
+        .symbol-btn { width: 42px; height: 42px; margin: 4px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--orange); color: var(--text); border-radius: 10px; cursor: pointer; }
+        .nav-btn { background:none; border:none; cursor:pointer; padding: 5px; }
+        .nav-btn img { width: 26px; }
     </style>
 </head>
 <body>
 
-    <div class="bg-layer">
-        <div class="bg-image"></div>
-    </div>
-
-    <div id="loader-container">
-        <div class="loading-text">جاري الاتصال بالسيرفر... <span id="percentage">0%</span></div>
-        <div class="progress-wrapper" onclick="speedUp()">
-            <div id="progress-fill"></div>
-        </div>
-        <div class="hint-text">اضغط على شريط التحميل للتسريع ⚡</div>
-    </div>
-
-    <div id="login-interface" class="glass-panel">
-        <div class="top-header">
-            <img src="https://res.cloudinary.com/dpggetoyh/image/upload/v1776595066/a7e855b8-78b0-40b2-8487-e4cf76587e22_xfqhb3.jpg" class="top-icon" alt="icon">
-            <div class="like-container">
-                <img src="https://cdn-icons-png.flaticon.com/128/12096/12096301.png" id="likeBtnIcon" class="like-btn" onclick="addLike()" alt="Like">
-                <span class="like-count" id="countDisplay">0</span>
+    <div id="login-section">
+        <div class="bg-layer"><div class="bg-image"></div></div>
+        
+        <div id="loader-container">
+            <div class="loading-text">جاري الاتصال بالسيرفر... <span id="percentage">0%</span></div>
+            <div class="progress-wrapper" onclick="speedUp()">
+                <div id="progress-fill"></div>
             </div>
         </div>
-        
-        <div class="video-wrapper">
-            <video id="loginVid" class="panel-video" loop muted playsinline>
-                <source src="https://res.cloudinary.com/dpggetoyh/video/upload/v1776416800/VID_20260417_100508_015_j8xfcl.mp4" type="video/mp4">
-            </video>
-        </div>
 
-        <button class="google-btn" onclick="loginWithGoogle()" title="تسجيل الدخول بجوجل">
-            <img src="https://cdn-icons-png.flaticon.com/128/300/300221.png" alt="google">
-        </button>
-        
-        <div id="redirectMsg" class="status-msg">✅ تم الدخول.. جاري تحويلك</div>
+        <div id="login-interface">
+            <div class="glass-panel">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 12px;">
+                    <img src="https://res.cloudinary.com/dpggetoyh/image/upload/v1776595066/a7e855b8-78b0-40b2-8487-e4cf76587e22_xfqhb3.jpg" style="width: 35px; border-radius: 10px;" alt="icon">
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/128/12096/12096301.png" id="likeBtnIcon" style="width: 28px; cursor: pointer;" onclick="addLike()" alt="Like">
+                        <span id="countDisplay" style="font-weight: 700;">0</span>
+                    </div>
+                </div>
+                <div style="width: 86%; margin: 0 auto 20px auto; border-radius: 15px; overflow: hidden;">
+                    <video id="loginVid" style="width: 100%;" loop muted playsinline>
+                        <source src="https://res.cloudinary.com/dpggetoyh/video/upload/v1776416800/VID_20260417_100508_015_j8xfcl.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <button class="google-btn" onclick="loginWithGoogle()"><img src="https://cdn-icons-png.flaticon.com/128/300/300221.png" width="18"></button>
+                <div id="redirectMsg" style="color: #00ff00; font-size: 12px; margin-top: 10px; display: none; font-weight: bold;">✅ تم الدخول.. جارٍ فتح البوت</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bot-interface">
+        <div class="header">
+            <div style="font-weight: 900; font-size: 1.1rem; background: linear-gradient(to right, #ff5c00, #ff00fb, #007BFF, #ff5c00); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: rainbow-move 3s linear infinite;">𝑩𝑶𝑻 𝒁𝑨5𝑹𝑨𝑭𝑨</div>
+            <div class="header-btns">
+                <button class="nav-btn" onclick="location.reload()"><img src="https://cdn-icons-png.flaticon.com/128/93/93634.png" alt="Back"></button>
+                <a href="https://tiktok.com/@abdelahi.ff.dz.17" target="_blank" class="nav-btn"><img src="https://images.icon-icons.com/2992/PNG/96/tiktok_logo_icon_187324.png" alt="TikTok"></a>
+                <button class="nav-btn" onclick="clearChat()"><img src="https://cdn-icons-png.flaticon.com/128/3334/3334345.png" alt="Delete"></button>
+            </div>
+        </div>
+        <div class="chat" id="chat"></div>
+        <div class="input-area">
+            <input id="inp" type="text" placeholder="اكتب اسمك أو رقم الخيار..." maxlength="30">
+            <button class="send-btn" onclick="send()">➔</button>
+        </div>
     </div>
 
     <script type="module">
@@ -149,8 +147,7 @@
             projectId: "bot-za5rafa",
             storageBucket: "bot-za5rafa.firebasestorage.app",
             messagingSenderId: "747795672156",
-            appId: "1:747795672156:web:938283330b06a7b0f6ca99",
-            measurementId: "G-7BBZ0JLECB"
+            appId: "1:747795672156:web:938283330b06a7b0f6ca99"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -166,32 +163,21 @@
 
         window.loginWithGoogle = function() {
             signInWithPopup(auth, provider).then((result) => {
-                const user = result.user;
-                set(ref(database, 'users/' + user.uid), {
-                    name: user.displayName,
-                    email: user.email,
-                    lastSeen: new Date().toISOString()
-                });
-                
                 document.getElementById('redirectMsg').style.display = 'block';
-                setTimeout(() => {
-                    window.location.href = "https://abdelahidz1-hash.github.io/BOT-ZA5RAFA-/";
-                }, 1500);
+                setTimeout(() => { startBot(); }, 1000);
             }).catch(err => alert("فشل الدخول: " + err.message));
         }
 
         window.addLike = function() {
             if (!localStorage.getItem('userLikedBot')) {
-                runTransaction(likesRef, (current) => {
-                    return (current || 0) + 1;
-                });
+                runTransaction(likesRef, (current) => { return (current || 0) + 1; });
                 localStorage.setItem('userLikedBot', 'true');
-                checkLikeStatus();
             }
         }
     </script>
 
     <script>
+        // منطق شريط التحميل والتبديل
         let progress = 0;
         let speed = 40; 
         const progressBar = document.getElementById('progress-fill');
@@ -201,7 +187,9 @@
         let timer = setInterval(() => {
             if (progress >= 100) {
                 clearInterval(timer);
-                showLogin();
+                document.getElementById('loader-container').style.display = 'none';
+                document.getElementById('login-interface').style.display = 'flex';
+                videoElement.play();
             } else {
                 progress++;
                 progressBar.style.width = progress + '%';
@@ -210,31 +198,80 @@
         }, speed);
 
         function speedUp() { 
-            progress += 10; 
-            if(progress > 100) progress = 100;
-            
-            // تفعيل الصوت عند الضغط للتسريع
+            progress += 15; if(progress > 100) progress = 100;
             videoElement.muted = false;
-            videoElement.volume = 1.0; 
         }
 
-        function showLogin() {
-            document.getElementById('loader-container').style.display = 'none';
-            document.getElementById('login-interface').style.display = 'block';
-            videoElement.play();
-            checkLikeStatus();
+        function startBot() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('bot-interface').style.display = 'flex';
+            showWelcome();
         }
 
-        function checkLikeStatus() {
-            if (localStorage.getItem('userLikedBot')) {
-                document.getElementById('likeBtnIcon').classList.add('disabled');
+        // --- كود بوت الزخرفة الأصلي (بدون أي تغيير) ---
+        let state = "idle";
+        const COPY_ICON = "https://cdn-icons-png.flaticon.com/128/9238/9238938.png";
+        const FF_CODES = [{ f: "🇩🇿", c: "[b][008000]█[FFFFFF]█[CC0000]█ ALGERIA ❤️" },{ f: "🇹🇳", c: "[b][CC0000]█[FFFFFF]🇹🇳[CC0000]█ TUNISIA ❤️" },{ f: "🇵🇸", c: "[b][000000]█[008000]█[FFFFFF]█[CC0000] PALESTINE" },{ f: "🇲🇦", c: "[b][CC0000]█[00FF33]★[CC0000]█ MOROCCO 🇲🇦" },{ f: "🇸🇾", c: "[b][FF0000]█[FFFFFF]█[000000]█ SYRIA [00FF00]★★" },{ f: "🇯🇴", c: "[b][CC0000]★[000000]█[FFFFFF]█[008000]█ JORDAN 🇯🇴" },{ f: "🇱🇾", c: "[b][000000]█[FF0000]█[008000]█ LIBYA" },{ f: "🇲🇷", c: "[b][008000]█[FFFF00]☪[008000]█ MAURITANIA" },{ f: "🇸🇦", c: "[008000]█[FFFFFF]⚔️[008000]█ KSA" },{ f: "🇪🇬", c: "[b][FF0000]█[FFFFFF]█[000000]█ EGYPT" },{ f: "🇮🇶", c: "[b][FF0000]█[FFFFFF]الله أكبر[000000]█ IRAQ" },{ f: "🇦🇪", c: "[FF0000]█[008000]█[FFFFFF]█[000000]█ UAE" },{ f: "🇰🇼", c: "[b][000000]█[008000]█[FFFFFF]█[FF0000]█ KUWAIT" }];
+        const NORMAL_CODES = [{ n: "كود المنزل", c: "[B][C]╱◥██████◣\n[7F00FF]│∩│▤│▤│▤\n▓▓▓▓▓▓▓▓▓" },{ n: "كود التدخين", c: "[b][6D7B8B]ᝰ[FFFFFF]▄▄▄▄▄▄[FFA000]▄▄▄\nGOLD FLAKE" },{ n: "كود الحب", c: "[FF0200]♥[FFFFFF]● ● \n/█\\/▓\\[FF0200]Ｉ LOVE U" },{ n: "كود BUS", c: "[B][C][00FFFF]╭━┳━┳━━┳━╮\n│──── BUS ┃□│\n╰◉─◉─━──◉╯" },{ n: "كود القلب", c: "[b][c][FF0000]✿\n[00FF00]᭄⸙  I ❤️ I LOVE YOU" }];
+        const CLAN_NAMES = ["ONLYㅤGOATSAㅤ??", "Only legend", "ONLYㅤGangㅤ??", "!ᴿᴱˣㅤBRAZIL", "ＩＱᅠ〆 T E A M","AD | SUPER Primeﾠﾠ〆 28", "Z  𓆩KAFN𓆪 ˣ", "𓆩O N T Y𓆪 〆9 A L 3 T", "WOLF TENX", "ＪＯＲＤＡＮ"];
+        const EXTENDED_COLORS = ["#000000","#ff3d00","#991b1b","#2dd4bf","#080808","#ff1744","#b91c1c","#2e1065","#121212","#ff007f","#dc2626","#4c1d95","#1a1a1a","#ff00ff","#ef4444","#5b21b6","#212121","#d500f9","#f87171","#6d28d9","#2c2c2c","#bc13fe","#fca5a5","#7c3aed","#333333","#6200ea","#fecaca","#8b5cf6","#424242","#304ffe","#fee2e2","#a78bfa","#555555","#2979ff","#831843","#c4b5fd","#666666","#00b0ff","#9d174d","#ddd6fe","#757575","#00e676","#be185d","#ede9fe","#888888","#1de9b6","#db2777","#422006","#9e9e9e","#00bfa5","#ec4899","#713f12","#bdbdbd","#0a192f","#f472b6","#854d0e","#d1d5db","#172a45","#064e3b","#a16207","#e0e0e0","#303c55","#065f46","#ca8a04","#eeeeee","#112240","#047857","#eab308","#f5f5f5","#1f2937","#059669","#facc15","#fafafa","#374151","#10b981","#fde047","#ffffff","#1e3a8a","#34d399","#fef08a","#00f3ff","#1d4ed8","#6ee7b7","#fefce8","#00e5ff","#2563eb","#a7f3d0","#7c2d12","#39ff14","#3b82f6","#d1fae5","#9a3412","#ccff00","#60a5fa","#ecfdf5","#c2410c","#ffff00","#93c5fd","#134e4a","#ea580c","#ffea00","#bfdbfe","#115e59","#f97316","#ffc107","#dbeafe","#0f766e","#fb923c","#ff9800","#450a0a","#0d9488","#ff5722","#7f1d1d","#14b8a6"];
+        const SYMBOLS = "☮ɞ✑𖣘☁☂☀☚☛☄☃☸☯☠☢☣☆ღ♫♪♨✿❀❤❣❥❄✎❆ϟ⛇༄࿓✏✁✂☎︎⚙︎⚠︎⚕︎♣♧➊➑ᦂᦦد❥❧❦❤𖣓";
+
+        function cp(text, btn) { navigator.clipboard.writeText(text).then(() => { btn.classList.add("done"); setTimeout(() => { btn.classList.remove("done"); }, 1000); }); }
+        function botReply(html) { const chat = document.getElementById("chat"); const row = document.createElement("div"); row.className = "row bot"; row.innerHTML = `<div class="bubble">${html}</div>`; chat.appendChild(row); chat.scrollTop = chat.scrollHeight; }
+        function clearChat() { if (confirm("هل تريد حذف الدردشة؟")) { document.getElementById("chat").innerHTML = ""; showWelcome(); state = "idle"; } }
+        function decorate(name) {
+            const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const maps = ["𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏Ｑ𝐑𝐒ＴＵＶ𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯ｗ𝐱𝐲𝐳","𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝐋𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶ජ𝗸𝗹𝕞𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇","𝑨𝑩𝑪𝑫𝑬𝑭𝑮𝑯𝑰𝑱𝑲𝑳𝑴𝑵𝑶𝑷𝑸𝑹𝑺𝑻𝑼𝑽𝑾𝑿𝒀𝒁𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝑳𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛"];
+            let results = "";
+            maps.forEach(m => {
+                let d = ""; let mapChars = Array.from(m);
+                for(let char of name){ let idx = alpha.indexOf(char); d += (idx > -1 && mapChars[idx]) ? mapChars[idx] : char; }
+                results += `<div class="style-row"><span>${d}</span><button class="cp" onclick="cp('${d}', this)"><img src="${COPY_ICON}"></button></div>`;
+            });
+            return results;
+        }
+        function showWelcome() { botReply(`أهلاً بك في <b>𝑩𝑶𝑻 𝒁𝑨5𝑹𝑨𝑭𝑨</b> ✨<br> • اكتب اسمك للزخرفة<br> • رقم ❶ اسم فارغ<br> • رقم ➋ رموز مميزة<br> • رقم ➌ تلوين الاسماء<br> • رقم ➍ اسماء كلانات<br> • رقم ➎ أكواد فري فاير`); }
+
+        function send() {
+            const inp = document.getElementById("inp"); let val = inp.value.trim(); if (!val) return;
+            const toCircleNumbers = (text) => text.replace(/1/g, "❶").replace(/2/g, "➋").replace(/3/g, "➌").replace(/4/g, "➍").replace(/5/g, "➎");
+            const normalizedVal = val.replace(/❶/g, "1").replace(/➋/g, "2").replace(/➌/g, "3").replace(/➍/g, "4").replace(/➎/g, "5");
+            const chat = document.getElementById("chat"); const userRow = document.createElement("div"); userRow.className = "row user"; userRow.innerHTML = `<div class="bubble">${toCircleNumbers(val)}</div>`; chat.appendChild(userRow);
+            
+            if (state === "waiting_ff_choice") {
+                if (normalizedVal === "1") {
+                    let ffHtml = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">`;
+                    FF_CODES.forEach(item => { ffHtml += `<div class="style-row"><span>${item.f}</span><button class="cp" onclick="cp('${item.c}', this)"><img src="${COPY_ICON}"></button></div>`; });
+                    botReply(`أكواد الأعلام:<br>${ffHtml}</div>`); state = "idle";
+                } else if (normalizedVal === "2") {
+                    let nHtml = ""; NORMAL_CODES.forEach(item => { nHtml += `<div class="style-row"><span>${item.n}</span><button class="cp" onclick="cp('${item.c}', this)"><img src="${COPY_ICON}"></button></div>`; });
+                    botReply(`الأكواد العادية:<br>${nHtml}`); state = "idle";
+                }
+            } else if (state === "waiting_color_name") {
+                let cHtml = `<div style="max-height: 300px; overflow-y: auto;">`;
+                EXTENDED_COLORS.forEach(hex => { const ffColor = `[${hex.replace("#", "").toUpperCase()}]`; cHtml += `<div class="style-row"><span style="color: ${hex};">${val}</span><button class="cp" onclick="cp('${ffColor}${val}', this)"><img src="${COPY_ICON}"></button></div>`; });
+                botReply(`تم تلوين اسمك:<br>${cHtml}</div>`); state = "idle";
+            } else if (normalizedVal === "1") {
+                botReply(`الأسماء الفارغة:<br><div class="style-row"><span>ㅤ </span><button class="cp" onclick="cp('ㅤ', this)"><img src="${COPY_ICON}"></button></div><div class="style-row"><span>ㅤ ㅤ </span><button class="cp" onclick="cp('ㅤ ㅤ', this)"><img src="${COPY_ICON}"></button></div>`);
+            } else if (normalizedVal === "2") {
+                let sHtml = ""; for(let s of SYMBOLS) sHtml += `<button class="symbol-btn" onclick="cp('${s}', this)">${s}</button>`;
+                botReply(`<div style="display:flex; flex-wrap:wrap; justify-content:center;">${sHtml}</div>`);
+            } else if (normalizedVal === "3") {
+                state = "waiting_color_name"; botReply("أرسل الاسم الذي تريد تلوينه...");
+            } else if (normalizedVal === "4") {
+                let clHtml = ""; CLAN_NAMES.forEach(n => { clHtml += `<div class="style-row"><span>${n}</span><button class="cp" onclick="cp('${n}', this)"><img src="${COPY_ICON}"></button></div>`; });
+                botReply(`أسماء الكلانات:<br>${clHtml}`);
+            } else if (normalizedVal === "5") {
+                state = "waiting_ff_choice"; botReply("❶ - أكواد الأعلام<br>➋ - أكواد عادية");
+            } else {
+                botReply(`زخرفة "${val}":<br>${decorate(val)}`);
             }
+            inp.value = ""; chat.scrollTop = chat.scrollHeight;
         }
+
+        document.getElementById("inp").addEventListener("keypress", (e) => { if(e.key === "Enter") send(); });
     </script>
 </body>
-</html>
-    
-  </body>
+  </html>
   
-    </html>
-        
