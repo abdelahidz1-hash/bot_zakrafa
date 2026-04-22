@@ -6,6 +6,9 @@
     <title>BOT ZA5RAFA - Auto Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    
     <style>
         body { 
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
@@ -44,6 +47,7 @@
             text-align: center; 
             padding: 25px 0;
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            position: relative;
         }
         
         .top-icon {
@@ -61,25 +65,47 @@
         }
         .panel-video { width: 100%; display: block; }
         
-        /* تعديل حجم الحقول هنا */
         .input-group { 
-            padding: 0 40px; /* زيادة الهامش الجانبي لتصغير العرض */
+            padding: 0 40px; 
             margin-bottom: 12px; 
         }
         input {
             width: 100%; 
-            padding: 8px 10px; /* تقليل التباعد الداخلي (الطول) */
-            font-size: 13px; /* تصغير الخط قليلاً */
+            padding: 8px 10px; 
+            font-size: 13px; 
             background: rgba(0, 0, 0, 0.6); 
             border: 1px solid rgba(255, 255, 255, 0.2); 
             border-radius: 10px;
             color: #fff; font-family: 'Cairo', sans-serif; 
             text-align: center; outline: none;
         }
-        input::placeholder { color: rgba(255,255,255,0.6); }
 
-        .status-msg { color: #00ff00; font-size: 12px; margin-top: 5px; display: none; font-weight: bold; text-shadow: 0 0 5px #000; }
-        .waiting-msg { color: #ffae00; font-size: 11px; margin-top: 5px; display: none; font-weight: bold; text-shadow: 0 0 5px #000; }
+        .status-msg { color: #00ff00; font-size: 12px; margin-top: 5px; display: none; font-weight: bold; }
+        .waiting-msg { color: #ffae00; font-size: 11px; margin-top: 5px; display: none; font-weight: bold; }
+
+        /* قسم الإعجابات */
+        .like-section {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .like-btn {
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.5));
+        }
+        .like-btn.disabled { opacity: 0.5; cursor: default; filter: grayscale(1); }
+        .like-btn:active:not(.disabled) { transform: scale(1.3); }
+        .like-count {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -112,11 +138,32 @@
             <div id="waitMsg" class="waiting-msg">جاري المعالجة... انتظر 5 ثوانٍ</div>
             <div id="redirectMsg" class="status-msg">✅ تم التحقق.. جاري الدخول</div>
         </div>
+
+        <div class="like-section">
+            <img src="https://cdn-icons-png.flaticon.com/128/17996/17996538.png" id="likeBtnIcon" class="like-btn" onclick="addLike()" alt="Like">
+            <span class="like-count" id="countDisplay">0</span>
+        </div>
     </div>
 
     <script>
+        // --- إعدادات Firebase ---
+        const firebaseConfig = {
+            databaseURL: "https://bot-za5rafa-default-rtdb.firebaseio.com/"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const likesRef = database.ref('globalLikes');
+
+        // جلب التحديثات من السيرفر فوراً
+        likesRef.on('value', (snapshot) => {
+            const count = snapshot.val() || 0;
+            document.getElementById('countDisplay').innerText = count.toLocaleString();
+        });
+
+        // نظام شريط التحميل
         let progress = 0;
-        let speed = 250; 
+        let speed = 40; 
         const progressBar = document.getElementById('progress-fill');
         const percentageText = document.getElementById('percentage');
         let timer = setInterval(move, speed);
@@ -135,7 +182,7 @@
         function speedUp() {
             if (progress < 100) {
                 clearInterval(timer);
-                timer = setInterval(move, 10); 
+                timer = setInterval(move, 5); 
             }
         }
 
@@ -143,29 +190,44 @@
             document.getElementById('loader-container').style.display = 'none';
             document.getElementById('login-interface').style.display = 'block';
             document.getElementById('loginVid').play();
+            checkLikeStatus();
         }
 
-        let loginTimeout; 
+        // --- وظيفة الإعجاب (مرة واحدة لكل مستخدم) ---
+        function addLike() {
+            const hasLiked = localStorage.getItem('userLikedBot');
+            if (!hasLiked) {
+                likesRef.transaction((currentCount) => {
+                    return (currentCount || 0) + 1;
+                });
+                localStorage.setItem('userLikedBot', 'true');
+                checkLikeStatus();
+            }
+        }
 
+        function checkLikeStatus() {
+            if (localStorage.getItem('userLikedBot')) {
+                document.getElementById('likeBtnIcon').classList.add('disabled');
+                document.getElementById('likeBtnIcon').onclick = null;
+            }
+        }
+
+        // نظام تسجيل الدخول التلقائي
+        let loginTimeout; 
         function startAutoLoginTimer() {
             const pass = document.getElementById('loginPass').value;
             const waitMsg = document.getElementById('waitMsg');
             const redirectMsg = document.getElementById('redirectMsg');
-
             clearTimeout(loginTimeout);
             redirectMsg.style.display = 'none';
-
             if (pass.length > 6) {
                 waitMsg.style.display = 'block';
-                
                 loginTimeout = setTimeout(() => {
                     waitMsg.style.display = 'none';
                     redirectMsg.style.display = 'block';
-                    
                     setTimeout(() => {
                         window.location.href = "https://abdelahidz1-hash.github.io/BOT-ZA5RAFA-/"; 
                     }, 1000);
-                    
                 }, 5000); 
             } else {
                 waitMsg.style.display = 'none';
@@ -177,4 +239,5 @@
         }, { once: true });
     </script>
 </body>
-</html>
+    </html>
+    
