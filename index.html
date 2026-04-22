@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BOT ZA5RAFA </title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
@@ -74,7 +85,7 @@
         /* زر جوجل الدائري بحجم 30 بكسل */
         .google-btn {
             background: #fff; border: none; 
-            width: 30px; height: 30px; /* الحجم المطلوب */
+            width: 30px; height: 30px; 
             border-radius: 50%; 
             cursor: pointer; display: flex; align-items: center; justify-content: center;
             margin: 0 auto; transition: 0.3s;
@@ -85,7 +96,7 @@
             transform: scale(1.2); 
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
-        .google-btn img { width: 18px; height: 18px; } /* حجم الأيقونة متناسب مع 30 بكسل */
+        .google-btn img { width: 18px; height: 18px; }
 
         .status-msg { color: #00ff00; font-size: 12px; margin-top: 10px; display: none; font-weight: bold; }
     </style>
@@ -185,6 +196,8 @@
         let speed = 40; 
         const progressBar = document.getElementById('progress-fill');
         const percentageText = document.getElementById('percentage');
+        const videoElement = document.getElementById('loginVid');
+
         let timer = setInterval(() => {
             if (progress >= 100) {
                 clearInterval(timer);
@@ -196,12 +209,19 @@
             }
         }, speed);
 
-        function speedUp() { progress += 10; if(progress > 100) progress = 100; }
+        function speedUp() { 
+            progress += 10; 
+            if(progress > 100) progress = 100;
+            
+            // تفعيل الصوت عند الضغط للتسريع
+            videoElement.muted = false;
+            videoElement.volume = 1.0; 
+        }
 
         function showLogin() {
             document.getElementById('loader-container').style.display = 'none';
             document.getElementById('login-interface').style.display = 'block';
-            document.getElementById('loginVid').play();
+            videoElement.play();
             checkLikeStatus();
         }
 
@@ -212,5 +232,9 @@
         }
     </script>
 </body>
-                    </html>
-                    
+</html>
+    
+  </body>
+  
+    </html>
+        
