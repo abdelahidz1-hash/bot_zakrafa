@@ -3,93 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ＢＯＴ ＺＡＫＲＡＦＡ - زخرفة وألوان</title>
+    <title>ＢＯＴ ＺＡ 5 ＲＡＦＡ</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <link rel="manifest" href="https://progressier.app/vII79ZQEel6BsSfkWNHK/progressier.json"/>
-    <script defer src="https://progressier.app/vII79ZQEel6BsSfkWNHK/script.js"></script>
-
     <style>
         :root {
             --primary-color: #00f2ff;
-            --bg-color: #000;
-            --surface: rgba(16, 16, 30, 0.85);
+            --bg-color: #0a0a0c;
+            --surface: rgba(20, 20, 35, 0.9);
             --border: rgba(255, 255, 255, 0.1);
             --orange: #ff5c00;
-            --text: #f0f0ff;
+            --text: #ffffff;
             --bot-bubble: rgba(255, 255, 255, 0.07);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        #loading-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-color); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 9999; font-family: 'Cairo', sans-serif;
-            transition: opacity 0.5s ease, visibility 0.5s;
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+            color: var(--text);
         }
 
-        .loader-header img { height: 250px; width: auto; object-fit: contain; margin-bottom: 20px; }
-        .loader-container { width: 85%; max-width: 400px; }
-        .status-text { color: var(--primary-color); font-size: 0.9rem; font-weight: 900; }
-        .progress-box { width: 100%; padding: 3px; background: rgba(255, 255, 255, 0.02); border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .progress-wrapper { width: 100%; height: 10px; background: #141414; border-radius: 50px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #006ae6, var(--primary-color)); box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); transition: width 0.2s ease-out; }
-
         #main-content {
-            display: none; font-family: 'Cairo', sans-serif; 
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+            display: flex;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
                         url('https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/2b22fbe56ede9d785ebed4f12a377b91.jpg');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            color: var(--text); height: 100vh; flex-direction: column; overflow: hidden; 
+            background-size: cover; 
+            background-position: center; 
+            height: 100vh; 
+            flex-direction: column; 
         }
 
         .header { 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            padding: 16px 20px; 
+            padding: 15px; 
             background: var(--surface); 
             backdrop-filter: blur(10px); 
             border-bottom: 1px solid var(--border);
-            position: relative;
+            z-index: 10;
         }
 
-        .name { font-weight: 900; font-size: 1.1rem; color: #FF0000; text-align: center; }
+        .name { font-weight: 900; font-size: 1.2rem; color: #FF0000; text-shadow: 0 0 10px rgba(255,0,0,0.3); }
 
-        .chat { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+        .chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
         .row { display: flex; align-items: flex-end; gap: 10px; animation: popIn .3s ease-out both; }
-        @keyframes popIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .bubble { max-width: 95%; padding: 14px 18px; border-radius: 20px; font-size: .95rem; line-height: 1.6; }
-        .row.bot .bubble { background: var(--bot-bubble); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); }
-        .row.user { flex-direction: row-reverse; }
-        .row.user .bubble { background: transparent; font-weight: 700; padding: 14px 0; }
-
-        .input-area { display: flex; gap: 12px; padding: 18px 20px; background: var(--surface); backdrop-filter: blur(15px); border-top: 1px solid var(--border); }
-        input#inp { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 16px; padding: 14px 20px; color: var(--text); outline: none; font-family: 'Cairo'; }
-        .send-btn { width: 56px; height: 56px; border-radius: 16px; border: none; background: var(--orange); color: #fff; cursor: pointer; font-size: 1.2rem;}
-
-        .style-row { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border); border-radius: 12px; padding: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 8px; }
-        .style-row span { font-size: 1.1rem; font-weight: bold; white-space: pre-wrap; font-family: sans-serif; cursor: pointer; }
         
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .bubble { max-width: 90%; padding: 12px 16px; border-radius: 18px; font-size: .95rem; line-height: 1.6; position: relative; color: #ffffff; }
+        .row.bot .bubble { background: var(--bot-bubble); border: 1px solid var(--border); backdrop-filter: blur(8px); border-bottom-right-radius: 4px; }
+        .row.user { flex-direction: row-reverse; }
+        .row.user .bubble { background: var(--orange); color: white; border-bottom-left-radius: 4px; font-weight: 600; }
+
+        .input-area { display: flex; gap: 10px; padding: 15px; background: var(--surface); border-top: 1px solid var(--border); }
+        input#inp { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; padding: 12px 15px; color: #ffffff; outline: none; font-family: 'Cairo'; }
+        input#inp::placeholder { color: rgba(255, 255, 255, 0.5); }
+        
+        .send-btn { width: 50px; height: 50px; border-radius: 12px; border: none; background: var(--orange); color: #fff; cursor: pointer; transition: 0.3s; }
+        .send-btn:hover { transform: scale(1.05); background: #ff7c33; }
+
+        .symbol-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .symbol-item {
+            aspect-ratio: 1/1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #ffffff;
+        }
+
+        .symbol-item:hover {
+            background: var(--orange);
+            transform: translateY(-2px);
+        }
+
+        .style-row { 
+            background: rgba(255, 255, 255, 0.08); 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            padding: 10px; 
+            margin-bottom: 8px; 
+            cursor: pointer; 
+            text-align: center;
+            transition: 0.2s;
+            color: #ffffff;
+        }
+        .style-row span { font-weight: 700; }
+        
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen">
-        <div class="loader-header"><img src="https://res.cloudinary.com/dpggetoyh/image/upload/v1777280345/Picsart_26-04-27_09-53-07-249_ipw3iw.png" alt="Logo"></div>
-        <div class="loader-container">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <span style="color:#666; font-size:0.7rem; font-weight:900;">SYSTEM LOADING</span>
-                <span class="status-text" id="percentage">0%</span>
-            </div>
-            <div class="progress-box"><div class="progress-wrapper"><div class="progress-bar" id="bar"></div></div></div>
-        </div>
-    </div>
+    <div id="toast" class="toast">تم النسخ بنجاح!</div>
 
     <div id="main-content">
         <div class="header">
-            <div class="name">ＢＯＴ ＺＡＫＲＡＦＡ</div>
+            <div class="name">ＢＯＴ ＺＡ 5 ＲＡＦＡ</div>
         </div>
         <div class="chat" id="chat"></div>
         <div class="input-area">
@@ -99,143 +137,178 @@
     </div>
 
 <script>
-    window.addEventListener('load', () => {
-        const percentElement = document.getElementById('percentage');
-        const progressBar = document.getElementById('bar');
-        const loader = document.getElementById('loading-screen');
-        const main = document.getElementById('main-content');
-        
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.floor(Math.random() * 5) + 2; 
-            if (progress > 100) progress = 100;
-            
-            percentElement.innerText = `${progress}%`;
-            progressBar.style.width = `${progress}%`;
+    const chatBox = document.getElementById("chat");
+    const inputField = document.getElementById("inp");
+    const toast = document.getElementById("toast");
 
-            if (progress === 100) {
-                clearInterval(interval);
-                setTimeout(() => {
-                    loader.style.opacity = '0';
-                    loader.style.visibility = 'hidden';
-                    main.style.display = 'flex';
-                    showWelcome();
-                }, 500);
-            }
-        }, 30);
-    });
+    const allSymbols = "☠ ☂ ☃ ☁ ☼ ❆ ♨ ✎ ✏ ❤︎ ♨︎ ☏ ✆ ✇ ☸ ✿ ❀ ꨄ︎ 𖣂 ☕︎ ッ ❀ ࿐ ★ ↳ ↱ ⇢ ➯ ↝ ➸ ➹ ↬ ↫ ￫ ➥ ; — ─ ー 〜 〰 ⁓ ∼ (ೄྀ࿐ ˊˎ- ✿ ⩇ ⩉ ꐑ 𖣯 ⌕ ᨒ ᯤ ᯅ 𖤘  𖥦 ⏃ % 𓍯 𔗫 𔖲 𓂃 ﹆ ﹅ 𓄼 𓄹 ᭣ ꧞ 𓏲 𓂅 ꣼ ࿓ ࿔ ༄ ⌗ 𓈒 ⊹ 𖥔 ᨵ ꑘ ᜊ ᦒ ଘ ◖ ◗ 𖠗 ꗃ ٩ ะ ≛ ߸ 𖡡 𝆺𝅥 ꩜ 𖣠 𖦹 ❤︎ ♥︎ 𔘓 ♡ ᥫ᭡ ✶ 𖤐 ★ 𒀭 𑁍 ꕤ ❑ ❒ !i ！ !! ﹗ ⦂ 𓈃 𓄲 𓄴 𓈀 𓊔 ❝ ❞ ❛ ❜ ୨୧ ‣ › ⌫ ✧ ✦ ⭒ ✓ ✘ 𓈈 ᚙ ⩨ ▚ ₆⁶₆ ஃ ⿴ ⿻ ꭑ ᧑ 𐐫 𝗈︩︪ ꒰ ꒱ ʚ ɞ “” ⌨︎ ⚠︎ ☻ ✰ ❏ ˖* ೃ࿔ 𓆉 ◡ ꒦꒷ ✎ ᝰ ✿ ⚡︎ ☁︎ ⋆ ⋆⑅˚₊ ♡ 𓍲 𓍱 ꪔ 𓍯 ꊞ 𓂃 ꕀ ﹆ ˚ ༘♡ ⋆｡˚ ⤾ ・°☆ ✎ ◡ ⑅ ♡ 𖦹 ･ ♡ ･ ᐧ༚ ᐧ = ♡ εїз ᙏ ˳✧༚ /✿ ˙ᘧ ˙ ♡ ⊸ ꒰ ❛ ❜ ꒱ ♡⃕ ◡ ˚◞♡ ⃗ ʬʬʬ ༊·˚ ꕀ .* ♡ ✧˖° ꪔ ˙ ʟ˙ ♡‧₊˚ ◡ ♡ ·˚ ₊˚ˑ 𓆸 ꔛ *﹆ = ♡ ꙳ ⋆ ⸝⸝ യ *◞ ♡･ ʖ ･ . ˚◞♡ ෆ ･῾ ᵎ ⌇ ⁺◦ *´ސު｀ ༘⋆ ꙳ ꕀ ꒰ 𖧧 · ·♡ ꒱ ღ ⋆ ꕤ ♡ ⊹ ★ ꒷ ᵎᵎ ₊ ⨾ ⋆ ʚ ɞ ✦ ♥︎ ∞ 𑁍 ⸝⸝⸝ 𓅿 𖠋 𓍲 𓍱 𖥧 𖧧 ˒˒ 𖤣𖤥𖠿𖤣𖤥 𓇥 ֒ ☄︎ 𓆱 𓂃𓊝𓄹𓄺 𓌉◯𓇋 𓎩 ⸝⸝ 𓌈˒˒ ⍤ 𓆸 𓊆 𓊇 ꒰ ꒱ ˗ˏˋ ˎˊ˗ ⌇ ꪔ ꪔ • + . ˙ ✦ ♡ ㅤ°. • °. ✿ * · ✮ . • • ⊹ . ✧ ⊹ ˚ * · ✮ . . ★ · ⊹ + * ⊹ °. * ✧ . 𓈀 𖦥 ﹅ ン ㅤꞋꞌꞋꞌ ㅤィ % 𓂃 ㇁ ◒ ！ ン ㅤ╮ ⟆ ﹏ ！ 𓂃𓈒 ﹑ ζ ㅤ﹏ ⨾ ㅤ𓈈 ㅤ❨ ᨓ ⎓ ° ؟ 𓈒 ㅤ▱ 𓂅 𓂃 ⨾ ᘒ ◟ ζ 𓍢 ◖ ᨓ ♡ ■ ꫂ ২ ζ १ 𖥧 𓂃 ♥︎ ᨒ ୫ ૪ ໒ 𐂴 ৎ ຊ ∿ ꔵ ຯ ໒ ೨ 𖧧 Ꮺ 𖧷 𓏲 𖥨 𖦹 ๑ ໑ ࿔ ७ ५ ୭ ᠀ 𑁯 ੭ ⩩ ♥︎₊˚ ⚠︎·˚ ♡⸝⸝ ✦ ᖗ ⊹ ✦ 。°˖ ✧ ១ 𔘓⠀࣪. ᨳ ✦ ★ ☆ ❐ ❏ ⿻ ⎙ ⬪ :˵ˊᯅˋ˶ જ 俺 ◟ ੭ 𓂅 ﹕ 𓂃𓈒 ࿔ 在 𑁥 ੭ 𑊑 𑊁 ረ ૮ ᭡ ᘓ ១ 𑫈 ꝿ ౿ ꪆ 𑁯 𑊁 𑊡 𑫏 𑜷 Թ Ծ ౿ 𑁯 𑁭 𑁥 ੭ ꪆ ᥫ ᘏ Ꮼ ᘓ ୬ ෧ ᘡ ୪ ১ 𖥨Ꮼ ꮱ ᰢ ꮺ 𐑙 ꫤ ﹅ ﹆ Ꮺ ᰝ ჲ ᴥ 𖦆 𓍲 𓍱 Ꮘ ફ ળ ਨ ۶ ৫ ۲ ণ 𖡋 ଽ ꒰ ꒱ ꒲ 𖢆 ꯊ ꒷ ꒥ ꒦ ⏝ ︶ ᝰ 𖬺 ꔚ ꔛ ꕁ ꕀ ꒳ ꒴ 𖢺 ଓ ଲ ପ ମ ଘ ᳂ 🝎 𓐍 𐐫 𐐃 ◍ ⱺ ◔ ◷ 𔓏 • ㄀ ⌾ 𖣠 𖦹 ꩜ 🝎 ๑ ꮻ ☹︎ 𓇸 𖦸 𔓶 𒀭 𔓘 𑁍 𖡎 ֍ 🜰 ᦅ ⟲ ⟳ ❁ ᜊ ♡ ❥ ᯽ ꕤ 🝮 ♥︎ 𑃢 𐀶 ꒧ ꇊ ⎙ ⏚ 〧 ▌ ▬ ▭ ꉙ ꗃ ౾ ౽ 𐰢 ⏧ 𓄹 𓄼 𔓕 𔐬 𔘏 𓏲 𓍢 𓍯 𓂅 𓂃 𓁹 𐇻 ᨃ ᨓ ᨑ ᨐ ᨏ ᨎ ╭╯ ◖ ◗ ꉂ ‡ ꒷ ⌨ ⬪ ↀ ⬩ ⬧ ⬥ ⊹ 〨 ⩌ ⩍ ⩋ 𓊌 𓇿 𓊔 𓈈 ㆐ Ⳋ ︳ ⴰ 𔒴 ↻".split(/\s+/);
 
-    const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    function botReply(html) {
+        const row = document.createElement("div");
+        row.className = "row bot";
+        row.innerHTML = `<div class="bubble">${html}</div>`;
+        chatBox.appendChild(row);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            toast.style.opacity = "1";
+            setTimeout(() => toast.style.opacity = "0", 1500);
+        });
+    }
+
+    window.onload = () => {
+        botReply(`اهلا بك في ＢＯＴ ＺＡ 5 ＲＡＦＡ ✨<br><br>
+        اكتب اسمك لزخرفه<br>
+        اكتب رقم <b>1</b> لحصول على اسم فارغ<br>
+        اكتب رقم <b>2</b> لحصول على رموز مميزة<br>
+        اكتب رقم <b>3</b> لتلوين الإسم<br>
+        اكتب رقم <b>4</b> لحصول على اسماء كلانات<br>
+        اكتب رقم <b>5</b> لحصول على اسماء برازيلية والعادية`);
+    };
+
     const maps = [
-        "𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳",
-        "𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝐌𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶ජ𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘻",
+        "𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳",
+        "𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇",
         "𝑨𝑩𝑪𝑫𝑬𝑭𝑮𝑯𝑰𝑱𝑲𝑳𝑴𝑵𝑶𝑷𝑸𝑹𝑺𝑻𝑼𝑽𝑾𝑿𝒀𝒁𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛",
         "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ",
+        "🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩",
+        "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫",
         "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ",
         "𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩𝒪𝒫𝒬ℛ𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹ℯ𝒻ℊ𝒽𝒾𝒿𝓀𝓁𝓂𝓃ℴ𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏",
-        "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝒁𝓪𝓫𝓬𝓭𝓮𓅿𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓋𝔀𝓍𝔂𝓏",
+        "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃",
         "𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡𝑢𝑣𝑤𝑥𝑦𝑧",
-        "𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦實𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘅𝘺𝘻",
+        "𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦𝖿𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻",
         "𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹𝖺𝖻𝖼𝖽𝖾𝖿𝗀𝗁𝗂𝗃𝗄𝗅𝗆𝗇𝗈𝗉𝗊𝗋𝗌𝗍𝗎𝗏𝗐𝗑𝗒𝗓",
-        "𝙰𝙱𝙲𝙳𝙴ＦＧＨＩ𝙹𝙺𝙻𝙼ＮＯＰ𝚀𝚁ＳＴＵＶＷＸＹＺ𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔🇱🇲𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣",
-        "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉",
+        "𝙰𝙱𝙲𝙳𝙴Ｆ𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂Ｔ𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔ｌ𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣",
+        "🄰🄱🄲🄳🄴🄵🄿🄶🄷🄸🄹🄺current_style🄼🄽🄾🄿🄲🄳🄴🄵🄶🄷🄸🄹🄺current_style🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺current_style🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉",
         "🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉",
-        "ᴬᴮᶜᴰᴱᶠᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾᑫᴿˢᵀᵁⱽᵂˣʸᶻᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᑫʳˢᵗᵘᵛʷˣʸᶻ",
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+        "ᴬᴮᶜᴰᴱᶠᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾᵠᴿˢᵀᵁⱽᵂˣʸᶻᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᵠʳˢᵗᵘᵛʷˣʸᶻ",
+        "ᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰ",
         "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ",
-        "𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷",
-        "𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟"
+        "ᎪᏴᏟᎠᎬFᏀᎻᏆᎫᏦᏞᎷNᎾᏢϘᎡᏚᎢᏌᏙᏔᏆᎽᏃᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ",
+        "Ⓐ🅑Ⓒ🅓Ⓔ🅕Ⓖ🅗Ⓘ🅙Ⓚ🅚Ⓛ🅛Ⓜ🅜Ⓝ🅝Ⓞ🅞Ⓟ🅟Ⓠ🅠Ⓡ🅡Ⓢ🅢Ⓣ🅣Ⓤ🅤Ⓥ🅥Ⓦ🅦Ⓧ🅧Ⓨ🅨Ⓩⓩⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ",
+        "🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓",
+        "𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛",
+        "𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷",
+        "𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟"
     ];
+    const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-    const symbols = "☠☂☃☁☼❆♨✎✏❤︎♨︎☏✆✇☸✿❀ꨄ︎𖣂☕︎ッ❀࿐★↳↱⇢➯↝➸➹↬↫￫➥—─ー〜〰⁓∼ೄྀ࿐ˊˎ-✿⩇⩉ꐑ𖣯⌕ᨒᯤᯅ𖤘𖥦⏃%𓍯𔗫𔖲𓂃﹆﹅𓄼𓄹᭣꧞𓏲𓂅꣼࿓࿔༄⌗𓈒⊹𖥔ᨵꑘᜊᦒଘ◖◗𖠗ꗃ٩ะ≛߸𖡡𝆺𝅥꩜𖣠𖦹❤︎♥︎𔘓♡ᥫ᭡✶𖤐★𒀭𑁍ꕤ❑❒!i！？!!﹗⦂𓈃𓄲𓄴𓈀𓊔❝❞❛❜୨୧‣›⌫✧✦⭒✓✘𓈈ᚙ⩨▚₆⁶₆ஃ⿴⿻ꭑ᧑𐐫𝗈︩︪꒰꒱ʚɞ⌨︎⚠︎☻✰❏";
-    const blankNames = ["ㅤ", "ㅤㅤ", "ㅤㅤㅤ", "ㅤㅤㅤㅤ"];
-    const clanNames = ["ONLYㅤGOATSAㅤ??", "Only legend", "ONLYㅤGangㅤ??", "!ᴿᴱˣㅤBRAZIL", "ＩＱᅠ〆 T E A M", "Z  𓆩KAFN𓆪 ˣ", "WOLF TENX", "ＪＯＲＤＡＮ", "ᵀᴵᴷ ヽᴘᴀ❀ɴᴇʟ", "ＧＳＧ〆IＲＡQ", "７Ｒ ＴＥＡＭ"];
-    const brazilianNames = ["DuXx Zz ?", "Zoom. 01x", "Universe FF?", "Junxor Zz ?", "Fars!ㅤZzㅤ?", "Jonaeid 01x", "Keplar 3x", "Universe NoXx", "SancheZx! 모", "Z's DANGER", "Ꭾ!ꪎㅤZᴇʀᴏꪎㅤ¿?", "freestyleㅤ!?", "Zzz Phobos №¹", "Only Ziko"];
-    const colorMap = [{ name: "أحمر", hex: "#FF0000" }, { name: "أزرق", hex: "#0000FF" }, { name: "أصفر", hex: "#FFFF00" }, { name: "أبيض", hex: "#FFFFFF" }];
-
-    let colorMode = false;
-
-    function decorate(text) {
-        let out = "";
-        maps.forEach((m) => {
-            let res = "";
-            let mArr = Array.from(m);
-            for (let char of text) {
-                let idx = alpha.indexOf(char);
-                if (idx > -1) { res += mArr[idx] || char; }
-                else if (alpha.indexOf(char.toUpperCase()) > -1) { res += mArr[alpha.indexOf(char.toUpperCase())] || char; }
-                else { res += char; }
-            }
-            out += `<div class="style-row"><span>${res}</span></div>`;
-        });
-        return out;
-    }
-
-    function colorize(text) {
-        let out = "";
-        colorMap.forEach(c => {
-            out += `<div class="style-row"><span style="color:${c.hex}">${text}</span></div>`;
-        });
-        return out;
-    }
-
-    function botReply(html) { 
-        const chat = document.getElementById("chat"); 
-        const row = document.createElement("div"); 
-        row.className = "row bot"; 
-        row.innerHTML = `<div class="bubble">${html}</div>`; 
-        chat.appendChild(row); 
-        chat.scrollTop = chat.scrollHeight; 
-    }
-
-    function showWelcome() {
-        botReply(`اهلا بك في ＢＯＴ ＺＡＫＲＡＦＡ ✨<br>
-        اكتب اسمك لزخرفته<br>
-        1 - اسم فارغ<br>
-        2 - رموز مميزة<br>
-        3 - تلوين الإسم<br>
-        4 - أسماء كلانات<br>
-        5 - أسماء برازيلية<br>
-        6 - حساسية حسب الجهاز`);
-    }
+    let isColoring = false;
 
     function send() {
-        const inp = document.getElementById("inp");
-        let val = inp.value.trim(); if(!val) return;
-        const chat = document.getElementById("chat");
-        const userRow = document.createElement("div"); userRow.className = "row user";
-        userRow.innerHTML = `<div class="bubble">${val}</div>`;
-        chat.appendChild(userRow);
-        inp.value = "";
+        let val = inputField.value.trim();
+        if (!val) return;
 
-        if (colorMode) {
-            botReply(`نتائج تلوين الاسم لـ "${val}":<br>${colorize(val)}`);
-            colorMode = false;
-            inp.placeholder = "اكتب اسمك أو رقم الخيار...";
-        } else if(val === "1") {
-            let bHtml = "الأسماء الفارغة المتاحة:<br>";
-            blankNames.forEach((b) => { bHtml += `<div class="style-row"><span>${b}</span></div>`; });
-            botReply(bHtml);
+        const userRow = document.createElement("div");
+        userRow.className = "row user";
+        userRow.innerHTML = `<div class="bubble">${val}</div>`;
+        chatBox.appendChild(userRow);
+        inputField.value = "";
+
+        if (isColoring) {
+            let html = "اختر اللون للنسخ:<br>";
+            const colorMap = [
+                {n:"أحمر", f:"[FF0000]", c:"#FF0000"}, 
+                {n:"أصفر", f:"[FFFF00]", c:"#FFFF00"}, 
+                {n:"أزرق", f:"[0000FF]", c:"#0000FF"}, 
+                {n:"أخضر", f:"[00FF00]", c:"#00FF00"}, 
+                {n:"وردي", f:"[FF00FF]", c:"#FF00FF"}
+            ];
+            colorMap.forEach(c => {
+                html += `<div class="style-row" onclick="copyText('${c.f}${val}')"><span style="color:${c.c}">${val}</span></div>`;
+            });
+            botReply(html);
+            isColoring = false;
+            return;
+        }
+
+        if (val === "1") {
+            botReply("انسخ الكود فارغ:<br>" + 
+                `<div class="style-row" onclick="copyText('ㅤ')"><span>ㅤ</span></div>` +
+                `<div class="style-row" onclick="copyText('ㅤㅤ')"><span>ㅤㅤ</span></div>`);
         } else if (val === "2") {
-            botReply("الرموز المميزة المتاحة:<br><div class='style-row' style='word-break: break-all;'><span>" + symbols + "</span></div>");
+            let html = "اضغط على الرمز لنسخه فوراً:<br><div class='symbol-grid'>";
+            allSymbols.forEach(sym => {
+                if(sym.trim() !== "") {
+                    html += `<div class="symbol-item" onclick="copyText('${sym}')">${sym}</div>`;
+                }
+            });
+            html += "</div>";
+            botReply(html);
         } else if (val === "3") {
             botReply("أرسل الاسم الذي تريد تلوينه الآن 🎨");
-            colorMode = true;
-            inp.placeholder = "أدخل الاسم هنا...";
+            isColoring = true;
         } else if (val === "4") {
-            let cHtml = "أقوى أسماء الكلانات المقترحة:<br>";
-            clanNames.forEach(n => { cHtml += `<div class="style-row"><span>${n}</span></div>`; });
-            botReply(cHtml);
+            const clans = [
+                "ONLYㅤGOATSAㅤ??", "Only legend", "ONLYㅤGangㅤ??", "!ᴿᴱˣㅤBRAZIL", 
+                "ＩＱᅠ〆 T E A M", "AD | SUPER Primeﾠﾠ〆 28", "Z 𓆩KAFN𓆪 ˣ", 
+                "𓆩O N L Y𓆪 〆9 A L 3 T", "WOLF TENX", "ＪＯＲＤＡＮ", 
+                "ᵀᴵᴷ ヽᴘᴀ❀ɴᴇʟ", "ＧＳＧ〆IＲＡQ", "７Ｒ ＴＥＡＭ", 
+                "ᵀᵉᵃᵐツᎳᎪᏒᏒᎥᎾᏒ", "ᵀᵉᵃᵐ彡SHᎪDᎾᎳ", "ɢʜᴏsᴛ • ᴮᵁˢᵀᴱᴿ", 
+                "ʜᴇᴀʀᴛs乂ʙʀᴏᴋᴇɴ", "ᵀᵉᵃᵐ★Cobra", "ＴＨＵＧ々ＬＩＦ Ꭼ", 
+                "PH LHOWAYA", "Ｏｎｌｙ ＳＡＧＯＭＳ", "ＳＡＧＯＭＳ", 
+                "Ｒ２　ＰＬＡＹＥＲ ❄︵²⁰", "X7 　ＰＬＡＹＥＲ", "O N L Y〆 T E A M모", 
+                "ᴘᴏʟɪᴄ ᴛᴇᴀᴍ ☂", "ＮＥＸＴＳＴＡＲＳ", "X! WARRING", 
+                "RD BALIRMO", "BLAK KLOVER"
+            ];
+            let html = "أسماء كلانات مقترحة:<br>";
+            clans.forEach(n => {
+                html += `<div class="style-row" onclick="copyText('${n}')"><span>${n}</span></div>`;
+            });
+            botReply(html);
         } else if (val === "5") {
-            let bNamesHtml = "أسماء برازيلية احترافية:<br>";
-            brazilianNames.forEach(n => { bNamesHtml += `<div class="style-row"><span>${n}</span></div>`; });
-            botReply(bNamesHtml);
-        } else if (val === "6") {
-            botReply("هذه الميزة قيد التطوير حالياً!");
+            const brazil = [
+                "GX   R O N A L D O", "ＳＮＩＰＥＲ", "✿┋ AYMNEㅤꪆৎ", "『𝗩𝗜𝗣』 𝗕𝗥𝗔𝗭𝗜𝗟", 
+                "Ｓａｓｕｋｅ", "ɴᴇʏᴍᴀʀ", "ѕɴsㅤʟᴇᴀᴅᴇʀ", "God　CRIME　모", 
+                "ＴＲＹ　ＮＸＴ　ＴＩＭＥ", "OnlyㅤF!XA??", "T R E H A R D", 
+                "ᴴᵒˣㅤＬ７ａｊㅤ⁰⁹", "اوســ亗ــڪارR‿ˣ ✌︎", "ضـ﹏ــايعㅤ♪ㅤبدونك", 
+                "sᴏᴍʙʀᴀ☂ 1%", "فخرㅤღㅤحلب", "DuXx Zz ?", "Zoom. 01x", 
+                "Universe FF?", "Junxor Zz ?", "Fars!ㅤZzㅤ?", "Jonaeid 01x", 
+                "Keplar 3x", "Universe NoXx", "! Hawa4. Pack", "⸙ Brxzz Zxt 모", 
+                "'mㅤnoT⸸k!g", "SancheZx! 모", "Z's DANGER", "Ꭾ!ꪎㅤZᴇʀᴏꪎㅤ¿?", 
+                "freestyleㅤ!?", "UɴκɴowɴㅤF!x", "Zzz Phobos №¹", "song name??", 
+                "Oolen San↑JI", "OnlyㅤM A T R I Xㅤ모", "Only Ziko", "XxㅤStyleㅤ¿?", 
+                "x7ㅤGareㅤZzz"
+            ];
+            let html = "أسماء برازيلية وعادية:<br>";
+            brazil.forEach(n => {
+                html += `<div class="style-row" onclick="copyText('${n}')"><span>${n}</span></div>`;
+            });
+            botReply(html);
         } else {
-            botReply(`نتائج الزخرفة لـ "${val}":<br>${decorate(val)}`);
+            let html = "أنماط الزخرفة لاسمك:<br>";
+            maps.forEach(m => {
+                let res = "";
+                let styleArray = Array.from(m);
+                for (let char of val) {
+                    let idx = alpha.indexOf(char);
+                    if (idx > -1) {
+                        res += styleArray[idx];
+                    } else {
+                        // دعم للأحرف الكبيرة إذا كان النمط يدعمها
+                        let upperIdx = alpha.indexOf(char.toUpperCase());
+                        if (upperIdx > -1 && styleArray[upperIdx]) {
+                           res += styleArray[upperIdx];
+                        } else {
+                           res += char;
+                        }
+                    }
+                }
+                html += `<div class="style-row" onclick="copyText('${res}')"><span>${res}</span></div>`;
+            });
+            botReply(html);
         }
+        chatBox.scrollTop = chatBox.scrollHeight;
     }
+
+    inputField.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") send();
+    });
 </script>
 </body>
-        </html>
-            
+    </html>
+    
