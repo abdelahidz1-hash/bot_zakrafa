@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر التطبيقات الداكن</title>
+    <title>GET AN FREE ACCOUNT</title>
     <style>
         * {
             box-sizing: border-box;
@@ -118,7 +118,7 @@
     </header>
 
     <div class="store-container" id="storeContainer">
-        <!-- سيتم توليد البطاقات ديناميكياً هنا بناءً على ملف account.txt -->
+        <!-- سيتم توليد البطاقات ديناميكياً هنا -->
     </div>
 
     <script>
@@ -135,18 +135,15 @@
         // دالة لخصم النقاط من قاعدة بيانات Firebase
         async function deductPoints(actionType, username, password) {
             const deviceId = getDeviceId();
-            // تحويل المعرف إلى شكل آمن لمسارات الـ Firebase (استبدال الرموز إن وجدت)
             const safeDeviceId = deviceId.replace(/[^a-zA-Z0-9_-]/g, '_');
             const firebaseUrl = `https://ff-2022-633ed-default-rtdb.firebaseio.com/devices/${safeDeviceId}/points.json`;
 
             try {
-                // جلب النقاط الحالية للجهاز
                 const response = await fetch(firebaseUrl);
                 let currentPoints = await response.json();
 
-                // إذا لم يكن للجهاز رصيد مسجل مسبقاً، نعتبر رصيده الافتراضي مثلاً 0 أو نقوم بتعيينه (يمكنك تعديل القيمة الافتراضية هنا)
                 if (currentPoints === null) {
-                    currentPoints = 500; // مثال: نقطة افتراضية للاختبار، يمكنك جعلها 0 إذا رغبت
+                    currentPoints = 500; // رصيد افتراضي للاختبار
                 }
 
                 if (currentPoints < 120) {
@@ -156,7 +153,6 @@
 
                 const newPoints = currentPoints - 120;
 
-                // تحديث النقاط الجديدة في Firebase
                 const updateResponse = await fetch(firebaseUrl, {
                     method: 'PUT',
                     body: JSON.stringify(newPoints)
@@ -164,7 +160,6 @@
 
                 if (updateResponse.ok) {
                     if (actionType === 'show') {
-                        // نسخ المعلومات تلقائياً إلى الحافظة عند العرض
                         const accountInfo = `اسم المستخدم: ${username}\nكلمة المرور: ${password}`;
                         navigator.clipboard.writeText(accountInfo).then(() => {
                             alert(`تم خصم 120 نقطة بنجاح.\nتم نسخ معلومات الحساب إلى الحافظة!\n\n${accountInfo}`);
@@ -186,93 +181,93 @@
             }
         }
 
-        fetch('account.txt')
-            .then(response => response.text())
-            .then(data => {
-                const container = document.getElementById('storeContainer');
-                container.innerHTML = ''; // مسح أي محتوى افتراضي
+        // قائمة الحسابات مباشرة (يمكنك إدراج حساباتك هنا بسهولة تامة)
+        const accountsData = `
+        Abdullah,123123147147,https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg
+        `;
+
+        function loadStore() {
+            const container = document.getElementById('storeContainer');
+            container.innerHTML = '';
+            
+            const lines = accountsData.split('\n');
+            lines.forEach((line, index) => {
+                const trimmedLine = line.trim();
+                if (!trimmedLine) return;
                 
-                const lines = data.split('\n');
-                lines.forEach((line, index) => {
-                    const trimmedLine = line.trim();
-                    if (!trimmedLine) return; // تخطي الأسطر الفارغة
+                const parts = trimmedLine.split(',');
+                if (parts.length >= 3) {
+                    const username = parts[0].trim();
+                    const password = parts[1].trim();
+                    const iconUrl = parts[2].trim();
+                    const cardId = 'card_' + index;
                     
-                    const parts = trimmedLine.split(',');
-                    if (parts.length >= 3) {
-                        const username = parts[0].trim();
-                        const password = parts[1].trim();
-                        const iconUrl = parts[2].trim();
-                        const cardId = 'card_' + index;
-                        
-                        // التحقق من الحسابات المحذوفة أو التي تم الحصول عليها مسبقاً في هذا المتصفح
-                        if (localStorage.getItem('hidden_' + username)) {
-                            return; // تخطي هذا الحساب لكي لا يظهر مجدداً
-                        }
-
-                        // التحقق من توفر البيانات الأساسية
-                        if (username && password && iconUrl) {
-                            const card = document.createElement('div');
-                            card.className = 'app-card';
-                            card.id = cardId;
-                            card.innerHTML = `
-                                <div class="app-image-container">
-                                    <img src="${iconUrl}" alt="Account Image">
-                                </div>
-                                <div class="actions-container">
-                                    <input type="image" src="https://images.icon-icons.com/2065/PNG/96/view_show_icon_124811.png" alt="إظهار كلمة المرور" class="action-icon show-btn" data-username="${username}" data-password="${password}" data-action="show">
-                                    <input type="image" src="https://images.icon-icons.com/1580/PNG/96/2849824-basket-buy-market-multimedia-shop-shopping-store_107977.png" alt="شراء" class="action-icon buy-btn" data-username="${username}" data-password="${password}" data-action="buy">
-                                </div>
-                                <button class="delete-btn">حذف الحساب</button>
-                            `;
-                            
-                            const showIcon = card.querySelector('.show-btn');
-                            const buyIcon = card.querySelector('.buy-btn');
-                            const deleteBtn = card.querySelector('.delete-btn');
-
-                            // الحدث الخاص بزر الإظهار/النسخ
-                            showIcon.addEventListener('click', async function() {
-                                const action = this.getAttribute('data-action');
-                                const u = this.getAttribute('data-username');
-                                const p = this.getAttribute('data-password');
-                                const success = await deductPoints(action, u, p);
-                                if (success) {
-                                    // إظهار زر الحذف بمجرد نسخ/عرض معلومات الحساب بنجاح
-                                    deleteBtn.style.display = 'block';
-                                    showIcon.style.display = 'none'; // إخفاء أيقونة العرض لمنع التكرار
-                                }
-                            });
-
-                            // الحدث الخاص بزر الشراء
-                            buyIcon.addEventListener('click', async function() {
-                                const action = this.getAttribute('data-action');
-                                const u = this.getAttribute('data-username');
-                                const p = this.getAttribute('data-password');
-                                const success = await deductPoints(action, u, p);
-                                if (success) {
-                                    const accountInfo = `اسم المستخدم: ${u}\nكلمة المرور: ${p}`;
-                                    navigator.clipboard.writeText(accountInfo).catch(() => {});
-                                    deleteBtn.style.display = 'block';
-                                    buyIcon.style.display = 'none';
-                                }
-                            });
-
-                            // الحدث الخاص بزر الحذف لإخفاء الحساب نهائياً
-                            deleteBtn.addEventListener('click', function() {
-                                localStorage.setItem('hidden_' + username, 'true');
-                                card.style.transition = 'opacity 0.3s ease';
-                                card.style.opacity = '0';
-                                setTimeout(() => {
-                                    card.remove();
-                                }, 300);
-                            });
-
-                            container.appendChild(card);
-                        }
+                    if (localStorage.getItem('hidden_' + username)) {
+                        return; // إخفاء الحساب إذا تم استخدامه مسبقاً من هذا المتصفح
                     }
-                });
-            })
-            .catch(error => console.error('خطأ في قراءة ملف account.txt:', error));
+
+                    if (username && password && iconUrl) {
+                        const card = document.createElement('div');
+                        card.className = 'app-card';
+                        card.id = cardId;
+                        card.innerHTML = `
+                            <div class="app-image-container">
+                                <img src="${iconUrl}" alt="Account Image">
+                            </div>
+                            <div class="actions-container">
+                                <input type="image" src="https://images.icon-icons.com/2065/PNG/96/view_show_icon_124811.png" alt="إظهار كلمة المرور" class="action-icon show-btn" data-username="${username}" data-password="${password}" data-action="show">
+                                <input type="image" src="https://images.icon-icons.com/1580/PNG/96/2849824-basket-buy-market-multimedia-shop-shopping-store_107977.png" alt="شراء" class="action-icon buy-btn" data-username="${username}" data-password="${password}" data-action="buy">
+                            </div>
+                            <button class="delete-btn">حذف الحساب</button>
+                        `;
+                        
+                        const showIcon = card.querySelector('.show-btn');
+                        const buyIcon = card.querySelector('.buy-btn');
+                        const deleteBtn = card.querySelector('.delete-btn');
+
+                        showIcon.addEventListener('click', async function() {
+                            const action = this.getAttribute('data-action');
+                            const u = this.getAttribute('data-username');
+                            const p = this.getAttribute('data-password');
+                            const success = await deductPoints(action, u, p);
+                            if (success) {
+                                deleteBtn.style.display = 'block';
+                                showIcon.style.display = 'none';
+                            }
+                        });
+
+                        buyIcon.addEventListener('click', async function() {
+                            const action = this.getAttribute('data-action');
+                            const u = this.getAttribute('data-username');
+                            const p = this.getAttribute('data-password');
+                            const success = await deductPoints(action, u, p);
+                            if (success) {
+                                const accountInfo = `اسم المستخدم: ${u}\nكلمة المرور: ${p}`;
+                                navigator.clipboard.writeText(accountInfo).catch(() => {});
+                                deleteBtn.style.display = 'block';
+                                buyIcon.style.display = 'none';
+                            }
+                        });
+
+                        deleteBtn.addEventListener('click', function() {
+                            localStorage.setItem('hidden_' + username, 'true');
+                            card.style.transition = 'opacity 0.3s ease';
+                            card.style.opacity = '0';
+                            setTimeout(() => {
+                                card.remove();
+                            }, 300);
+                        });
+
+                        container.appendChild(card);
+                    }
+                }
+            });
+        }
+
+        // تشغيل التحميل عند فتح الصفحة
+        loadStore();
     </script>
 
 </body>
-</html>
+    </html>
+    
