@@ -3,327 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ＢＯＴ ＺＡ 5 ＲＡＦＡ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>متجر التطبيقات الداكن</title>
     <style>
-        :root {
-            --primary-color: #00f2ff;
-            --bg-color: #0a0a0c;
-            --surface: rgba(20, 20, 35, 0.9);
-            --border: rgba(255, 255, 255, 0.1);
-            --orange: #ff5c00;
-            --text: #ffffff;
-            --bot-bubble: rgba(255, 255, 255, 0.07);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--bg-color);
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
-            overflow: hidden;
-            color: var(--text);
+            background-color: #121212;
+            color: #e0e0e0;
+            padding: 20px;
         }
 
-        #main-content {
-            display: flex;
-            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
-                        url('https://freefiremobile-a.akamaihd.net/common/web_event/official2.ff.garena.all/img/20228/2b22fbe56ede9d785ebed4f12a377b91.jpg');
-            background-size: cover; 
-            background-position: center; 
-            height: 100vh; 
-            flex-direction: column; 
+        header {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .header { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            padding: 10px 20px; 
-            background: var(--surface); 
-            backdrop-filter: blur(10px); 
-            border-bottom: 1px solid var(--border);
-            z-index: 10;
+        header h1 {
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
-        .name { font-weight: 900; font-size: 1.2rem; color: #FF0000; text-shadow: 0 0 10px rgba(255,0,0,0.3); flex-grow: 1; text-align: center; }
-
-        .exit-btn {
-            width: 35px;
-            height: 35px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .exit-btn:hover { transform: scale(1.1); opacity: 0.8; }
-
-        .chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
-        .row { display: flex; align-items: flex-end; gap: 10px; animation: popIn .3s ease-out both; }
-        
-        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .bubble { max-width: 90%; padding: 12px 16px; border-radius: 18px; font-size: .95rem; line-height: 1.6; position: relative; color: #ffffff; }
-        .row.bot .bubble { background: var(--bot-bubble); border: 1px solid var(--border); backdrop-filter: blur(8px); border-bottom-right-radius: 4px; }
-        .row.user { flex-direction: row-reverse; }
-        .row.user .bubble { background: var(--orange); color: white; border-bottom-left-radius: 4px; font-weight: 600; }
-
-        .input-area { display: flex; gap: 10px; padding: 15px; background: var(--surface); border-top: 1px solid var(--border); }
-        input#inp { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; padding: 12px 15px; color: #ffffff; outline: none; font-family: 'Cairo'; }
-        input#inp::placeholder { color: rgba(255, 255, 255, 0.5); }
-        
-        .send-btn { width: 50px; height: 50px; border-radius: 12px; border: none; background: var(--orange); color: #fff; cursor: pointer; transition: 0.3s; }
-        .send-btn:hover { transform: scale(1.05); background: #ff7c33; }
-
-        .symbol-grid {
+        .store-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-            gap: 8px;
-            margin-top: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .symbol-item {
-            aspect-ratio: 1/1;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+        .app-card {
+            background-color: #1e1e1e;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            background-color: #2c2c2c;
+        }
+
+        /* تنسيق الصورة بدلاً من أسماء التطبيقات */
+        .app-image-container {
+            height: 60px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+        }
+
+        .app-image-container img {
+            max-height: 100%;
+            max-width: 100%;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        /* تنسيق الأيقونات الجديدة بدلاً من زر التثبيت */
+        .actions-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-icon {
+            width: 26px;
+            height: 26px;
             cursor: pointer;
-            transition: all 0.2s;
-            color: #ffffff;
+            object-fit: contain;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            background: none;
+            border: none;
+            padding: 0;
         }
 
-        .symbol-item:hover {
-            background: var(--orange);
-            transform: translateY(-2px);
+        .action-icon:hover {
+            transform: scale(1.15);
+            opacity: 0.85;
         }
 
-        .style-row { 
-            background: rgba(255, 255, 255, 0.08); 
-            border: 1px solid var(--border); 
-            border-radius: 10px; 
-            padding: 10px; 
-            margin-bottom: 8px; 
-            cursor: pointer; 
-            text-align: center;
-            transition: 0.2s;
-            color: #ffffff;
-        }
-        .style-row span { font-weight: 700; }
-        
-        .toast {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
+        /* تنسيق زر الحذف الإضافي */
+        .delete-btn {
+            display: none;
+            margin-top: 10px;
+            width: 100%;
+            background-color: #d9534f;
             color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            opacity: 0;
-            transition: 0.3s;
-            z-index: 1000;
+            border: none;
+            border-radius: 6px;
+            padding: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: #c9302c;
         }
     </style>
 </head>
 <body>
 
-    <div id="toast" class="toast">تم النسخ بنجاح!</div>
+    <header>
+        <h1>GET AN FREE ACCOUNT</h1>
+    </header>
 
-    <div id="main-content">
-        <div class="header">
-            <a href="https://abdelahi-apps01.netlify.app/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGnyuQh7cTscLg8aFniFZINriK7dkwWRlll7NI0k0KvqVCCxU74Yg7UodgZkL0_aem_QPLwj5KwE0tnuiVRYhwHyg">
-                <img src="https://images.icon-icons.com/909/PNG/96/exit_icon-icons.com_70975.png" alt="Exit" class="exit-btn">
-            </a>
-            <div class="name">ＢＯＴ ＺＡ 5 ＲＡＦＡ</div>
-            <div style="width: 35px;"></div>
-        </div>
-        <div class="chat" id="chat"></div>
-        <div class="input-area">
-          <input id="inp" type="text" placeholder="اكتب اسمك أو رقم الخيار..." maxlength="30">
-          <button class="send-btn" onclick="send()">➔</button>
-        </div>
+    <div class="store-container" id="storeContainer">
+        <!-- سيتم توليد البطاقات ديناميكياً هنا بناءً على ملف account.txt -->
     </div>
 
-<script>
-    const chatBox = document.getElementById("chat");
-    const inputField = document.getElementById("inp");
-    const toast = document.getElementById("toast");
-
-    const allSymbols = "☠ ☂ ☃ ☁ ☼ ❆ ♨ ✎ ✏ ❤︎ ♨︎ ☏ ✆ ✇ ☸ ✿ ❀ ꨄ︎ 𖣂 ☕︎ ッ ❀ ࿐ ★ ↳ ↱ ⇢ ➯ ↝ ➸ ➹ ↬ ↫ ￫ ➥ ; — ─ ー 〜 〰 ⁓ ∼ (ೄྀ࿐ ˊˎ- ✿ ⩇ ⩉ ꐑ 𖣯 ⌕ ᨒ ᯤ ᯅ 𖤘  𖥦 ⏃ % 𓍯 𔗫 𔖲 𓂃 ﹆ ﹅ 𓄼 𓄹 ᭣ ꧞ 𓏲 𓂅 ꣼ ࿓ ࿔ ༄ ⌗ 𓈒 ⊹ 𖥔 ᨵ ꑘ ᜊ ᦒ ଘ ◖ ◗ 𖠗 ꗃ ٩ ะ ≛ ߸ 𖡡 𝆺𝅥 ꩜ 𖣠 𖦹 ❤︎ ♥︎ 𔘓 ♡ ᥫ᭡ ✶ 𖤐 ★ 𒀭 𑁍 ꕤ ❑ ❒ !i ！ !! ﹗ ⦂ 𓈃 𓄲 𓄴 𓈀 𓊔 ❝ ❞ ❛ ❜ ୨୧ ‣ › ⌫ ✧ ✦ ⭒ ✓ ✘ 𓈈 ᚙ ⩨ ▚ ₆⁶₆ ஃ ⿴ ⿻ ꭑ ᧑ 𐐫 𝗈︩︪ ꒰ ꒱ ʚ ɞ “” ⌨︎ ⚠︎ ☻ ✰ ❏ ˖* ೃ࿔ 𓆉 ◡ ꒦꒷ ✎ ᝰ ✿ ⚡︎ ☁︎ ⋆ ⋆⑅˚₊ ♡ 𓍲 𓍱 ꪔ 𓍯 ꊞ 𓂃 ꕀ ﹆ ˚ ༘♡ ⋆｡˚ ⤾ ・°☆ ✎ ◡ ⑅ ♡ 𖦹 ･ ♡ ･ ᐧ༚ ᐧ = ♡ εїз ᙏ ˳✧༚ /✿ ˙ᘧ ˙ ♡ ⊸ ꒰ ❛ ❜ ꒱ ♡⃕ ◡ ˚◞♡ ⃗ ʬʬʬ ༊·˚ ꕀ .* ♡ ✧˖° ꪔ ˙ ʟ˙ ♡‧₊˚ ◡ ♡ ·˚ ₊˚ˑ 𓆸 ꔛ *﹆ = ♡ ꙳ ⋆ ⸝⸝ യ *◞ ♡･ ʖ ･ . ˚◞♡ ෆ ･῾ ᵎ ⌇ ⁺◦ *´ސު｀ ༘⋆ ꙳ ꕀ ꒰ 𖧧 · ·♡ ꒱ ღ ⋆ Ꙥ ♡ ⊹ ★ ꒷ ᵎᵎ ₊ ⨾ ⋆ ʚ ɞ ✦ ♥︎ ∞ 𑁍 ⸝⸝⸝ 𓅿 𖠋 𓍲 𓍱 𖥧 𖧧 ˒˒ 𖤣𖤥𖠿𖤣𖤥 𓇥 ֒ ☄︎ 𓆱 𓂃𓊝𓄹𓄺 𓌉◯𓇋 𓎩 ⸝⸝ 𓌈˒˒ ⍤ 𓆸 𓊆 𓊇 ꒰ ꒱ ˗ˏˋ ˎˊ˗ ⌇ ꪔ ꪔ • + . ˙ ✦ ♡ ㅤ°. • °. ✿ * · ✮ . • • ⊹ . ✧ ⊹ ˚ * · ✮ . . ★ · ⊹ + * ⊹ °. * ✧ . 𓈀 𖦥 ﹅ ン ㅤꞋꞌꞋꞌ ㅤィ % 𓂃 ㇁ ◒ ！ ン ㅤ╮ ⟆ ﹏ ！ 𓂃𓈒 ﹑ ζ ㅤ﹏ ⨾ ㅤ𓈈 ㅤ❨ ᨓ ⎓ ° ؟ 𓈒 ㅤ▱ 𓂅 𓂃 ⨾ ᘒ ◟ ζ 𓍢 ◖ ᨓ ♡ ■ ꫂ ২ ζ १ 𖥧 𓂃 ♥︎ ᨒ ୫ ૪ ໒ 𐂴 ৎ ຊ ∿ ꔵ ຯ ໒ ೨ 𖧧 Ꮺ 𖧷 𓏲 𖥨 𖦹 ๑ ໑ ࿔ ७ ५ ୭ ᠀ 𑁯 ੭ ⩩ ♥︎₊˚ ⚠︎·˚ ♡⸝⸝ ✦ ᖗ ⊹ ✦ 。°˖ ✧ ១ 𔘓⠀࣪. ᨳ ✦ ★ ☆ ❐ ❏ ⿻ ⎙ ⬪ :˵ˊᯅˋ˶ જ 俺 ◟ ੭ 𓂅 ﹕ 𓂃𓈒 ࿔ 在 𑁥 ੭ 𑊑 𑊁 ረ ૮ ᭡ ᘓ ១ 𑫈 ꝿ ౿ ꪆ 𑁯 𑊁 𑊡 𑫏 𑜷 Թ Ծ ౿ 𑁯 𑁭 𑁥 ੭ ꪆ ᥫ ᘏ Ꮼ ᘓ ୬ ෧ ᘡ ୪ ১ 𖥨Ꮼ ꮱ ᰢ ꮺ 𐑙 ꫤ ﹅ ﹆ Ꮺ ᰝ ჲ ᴥ 𖦆 𓍲 𓍱 Ꮘ ફ ળ ਨ ۶ ৫ ۲ ণ 𖡋 ଽ ꒰ ꒱ ꒲ 𖢆 ꯊ ꒷ ꒥ ꒦ ⏝ ︶ ᝰ 𖬺 ꔚ ꔛ ꕁ ꕀ ꒳ ꒴ 𖢺 ଓ ଲ ପ ମ ଘ ᳂ 🝎 𓐍 𐐫 𐐃 ◍ ⱺ ◔ ◷ 𔓏 • ㄀ ⌾ 𖣠 𖦹 ꩜ 🝎 ๑ ꮻ ☹︎ 𓇸 𖦸 𔓶 𒀭 𔓘 𑁍 𖡎 ֍ 🜰 ᦅ ⟲ ⟳ ❁ ᜊ ♡ ❥ ᯽ ꕤ 🝮 ♥︎ 𑃢 𐀶 ꒧ ꇊ ⎙ ⏚ 〧 ▌ ▬ ▭ ꉙ ꗃ ౾ ౽ 𐰢 ⏧ 𓄹 𓄼 𔓕 𔐬 𔘏 𓏲 𓍢 𓍯 𓂅 𓂃 𓁹 𐇻 ᨃ ᨓ ᨑ ᨐ ᨏ ᨎ ╭╯ ◖ ◗ ꉂ ‡ ꒷ ⌨ ⬪ ↀ ⬩ ⬧ ⬥ ⊹ 〨 ⩌ ⩍ ⩋ 𓊌 𓇿 𓊔 𓈈 ㆐ Ⳋ ︳ ⴰ 𔒴 ↻".split(/\s+/);
-
-    function botReply(html) {
-        const row = document.createElement("div");
-        row.className = "row bot";
-        row.innerHTML = `<div class="bubble">${html}</div>`;
-        chatBox.appendChild(row);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function copyText(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            toast.style.opacity = "1";
-            setTimeout(() => toast.style.opacity = "0", 1500);
-        });
-    }
-
-    window.onload = () => {
-        botReply(`اهلا بك في ＢＯＴ ＺＡ 5 ＲＡＦＡ ✨<br><br>
-        اكتب اسمك لزخرفه<br>
-        اكتب رقم <b>1</b> لحصول على اسم فارغ<br>
-        اكتب رقم <b>2</b> لحصول على رموز مميزة<br>
-        اكتب رقم <b>3</b> لتلوين الإسم<br>
-        اكتب رقم <b>4</b> لحصول على اسماء كلانات<br>
-        اكتب رقم <b>5</b> لحصول على اسماء برازيلية والعادية<br>
-        اكتب رقم <b>6</b> لحصول على لوجو 🎨`);
-    };
-
-    const maps = [
-        "𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳",
-        "𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝒐𝒑𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇",
-        "𝑨𝑩𝑪𝑫𝑬𝑭𝑮𝑯𝑰𝑱𝑲𝑳𝑴𝑵𝑶𝑷𝑸𝑹𝑺𝑻𝑼𝑽𝑾𝑿𝒀𝒁𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛",
-        "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ",
-        "🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩",
-        "mathbb{ABCDEFGHIJKLM NOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}",
-        "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ",
-        "𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩𝒪𝒫𝒬ℛ𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹ℯ𝒻ℊ𝒽𝒾𝒿𝓀𝓁𝓂𝓃ℴ𝓅𝓆𝓇𝓈𝓉🇺🇻🇼𝓍𝓎𝓏",
-        "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽🇺🇻🇼𝔁𝔂𝔃",
-        "𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡🇺🇻🇼𝑥𝑦𝑧",
-        "𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤🇩🇪𝖿𝘨𝘩🇮𝘫🇰𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵🇺𝘷🇼𝘹𝘺𝘻",
-        "𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹𝖺𝖻𝖼𝖽𝖾𝖿𝗀𝗁𝗂𝗃𝗄𝗅🇲𝗇𝗈𝗉𝗊𝗋𝗌𝗍🇺𝗏𝗐𝗑𝗒𝗓",
-        "𝙰𝙱𝙲𝙳𝙴Ｆ𝙶Ｈ𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂Ｔ𝚄ＶＷ𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏傳𝚐𝚑𝚒𝚓𝚔ｌ𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣",
-        "🄰🄱🄲🄳🄴🄵🄿🄶🄷🄸🄹🄺🄼🄽🄾🄿🄲🄳🄴🄵🄶🄷🄸🄹🄺🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉",
-        "🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉",
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-        "ᴬᴮᶜᴰᴱᶠᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾᵠᴿˢᵀᵁⱽᵂˣʸᶻᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᵠʳˢᵗᵘᵛʷˣʸᶻ",
-        "ᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰᴬᴴᴹᴱᴰ",
-        "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ",
-        "ᎪᏴᏟᎠᎬFᏀᎻᏆᎫᏦᏞᎷNᎾᏢϘᎡᏚᎢᏌᏙᏔᏆᎽᏃᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ",
-        "Ⓐ🅑Ⓒ🅓Ⓔ🅕Ⓖ🅗Ⓘ🅙Ⓚ🅚Ⓛ🅛Ⓜ🅜Ⓝ🅝Ⓞ🅞Ⓟ🅟Ⓠ🅠Ⓡ🅡Ⓢ🅢Ⓣ🅣Ⓤ🅤Ⓥ🅥Ⓦ🅦Ⓧ🅧Ⓨ🅨Ⓩⓩⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ",
-        "🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓🅐Ⓗ🅜🅔🅓",
-        "𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛",
-        "𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷",
-        "𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟"
-    ];
-    const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-    let isColoring = false;
-
-    function send() {
-        let val = inputField.value.trim();
-        if (!val) return;
-
-        const userRow = document.createElement("div");
-        userRow.className = "row user";
-        userRow.innerHTML = `<div class="bubble">${val}</div>`;
-        chatBox.appendChild(userRow);
-        inputField.value = "";
-
-        if (isColoring) {
-            let html = "اختر اللون للنسخ:<br>";
-            const colorMap = [
-                {n:"أحمر", f:"[FF0000]", c:"#FF0000"}, 
-                {n:"أصفر", f:"[FFFF00]", c:"#FFFF00"}, 
-                {n:"أزرق", f:"[0000FF]", c:"#0000FF"}, 
-                {n:"أخضر", f:"[00FF00]", c:"#00FF00"}, 
-                {n:"وردي", f:"[FF00FF]", c:"#FF00FF"}
-            ];
-            colorMap.forEach(c => {
-                html += `<div class="style-row" onclick="copyText('${c.f}${val}')"><span style="color:${c.c}">${val}</span></div>`;
-            });
-            botReply(html);
-            isColoring = false;
-            return;
+    <script>
+        // دالة للحصول على معرف فريد للجهاز أو إنشاؤه وتخزينه
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('device_unique_id');
+            if (!deviceId) {
+                deviceId = 'device_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                localStorage.setItem('device_unique_id', deviceId);
+            }
+            return deviceId;
         }
 
-        if (val === "1") {
-            botReply("انسخ الكود فارغ:<br>" + 
-                `<div class="style-row" onclick="copyText('ㅤ')"><span>ㅤ</span></div>` +
-                `<div class="style-row" onclick="copyText('ㅤㅤ')"><span>ㅤㅤ</span></div>`);
-        } else if (val === "2") {
-            let html = "اضغط على الرمز لنسخه فوراً:<br><div class='symbol-grid'>";
-            allSymbols.forEach(sym => {
-                if(sym.trim() !== "") {
-                    html += `<div class="symbol-item" onclick="copyText('${sym}')">${sym}</div>`;
+        // دالة لخصم النقاط من قاعدة بيانات Firebase
+        async function deductPoints(actionType, username, password) {
+            const deviceId = getDeviceId();
+            // تحويل المعرف إلى شكل آمن لمسارات الـ Firebase (استبدال الرموز إن وجدت)
+            const safeDeviceId = deviceId.replace(/[^a-zA-Z0-9_-]/g, '_');
+            const firebaseUrl = `https://ff-2022-633ed-default-rtdb.firebaseio.com/devices/${safeDeviceId}/points.json`;
+
+            try {
+                // جلب النقاط الحالية للجهاز
+                const response = await fetch(firebaseUrl);
+                let currentPoints = await response.json();
+
+                // إذا لم يكن للجهاز رصيد مسجل مسبقاً، نعتبر رصيده الافتراضي مثلاً 0 أو نقوم بتعيينه (يمكنك تعديل القيمة الافتراضية هنا)
+                if (currentPoints === null) {
+                    currentPoints = 500; // مثال: نقطة افتراضية للاختبار، يمكنك جعلها 0 إذا رغبت
                 }
-            });
-            html += "</div>";
-            botReply(html);
-        } else if (val === "3") {
-            botReply("أرسل الاسم الذي تريد تلوينه الآن 🎨");
-            isColoring = true;
-        } else if (val === "4") {
-            const clans = [
-                "ONLYㅤGOATSAㅤ??", "Only legend", "ONLYㅤGangㅤ??", "!ᴿᴱˣㅤBRAZIL", 
-                "ＩＱᅠ〆 T E A M", "AD | SUPER Primeﾠﾠ〆 28", "Z 𓆩KAFN𓆪 ˣ", 
-                "𓆩O N L Y𓆪 〆9 A L 3 T", "WOLF TENX", "ＪＯＲＤＡＮ", 
-                "ᵀᴵᴷ ヽᴘᴀ❀ɴᴇʟ", "ＧＳＧ〆IＲＡQ", "７Ｒ ＴＥＡＭ", 
-                "ᵀᵉᵃᵐツᎳᎪᏒᏒᎥᎾᏒ", "ᵀᵉᵃᵐ彡SHᎪDᎾᎳ", "ɢʜᴏsᴛ • ᴮᵁˢᵀᴱᴿ", 
-                "ʜᴇᴀʀᴛs乂ʙʀᴏᴋᴇɴ", "ᵀᵉᵃᵐ★Cobra", "ＴＨＵＧ々ＬＩＦ Ꭼ", 
-                "PH LHOWAYA", "Ｏｎｌｙ ＳＡＧＯＭＳ", "ＳＡＧＯＭＳ", 
-                "Ｒ２　ＰＬＡＹＥＲ ❄︵²⁰", "X7 　ＰＬＡＹＥＲ", "O N L Y〆 T E A M모", 
-                "ᴘᴏʟɪᴄ ᴛᴇᴀᴍ ☂", "ＮＥＸＴＳＴＡＲＳ", "X! WARRING", 
-                "RD BALIRMO", "BLAK KLOVER"
-            ];
-            let html = "أسماء كلانات مقترحة:<br>";
-            clans.forEach(n => {
-                html += `<div class="style-row" onclick="copyText('${n}')"><span>${n}</span></div>`;
-            });
-            botReply(html);
-        } else if (val === "5") {
-            const brazil = [
-                "GX   R O N A L D O", "ＳＮＩＰＥＲ", "✿┋ AYMNEㅤꪆৎ", "『𝗩𝗜𝗣』 ＢＲＡ𝗭ＩＬ", 
-                "Ｓａｓｕｋｅ", "ɴᴇʏᴍᴀʀ", "ѕɴsㅤʟᴇᴀᴅᴇʀ", "God　CRIME　모", 
-                "ＴＲＹ　ＮＸＴ　ＴＩＭＥ", "OnlyㅤF!XA??", "T R E H A R D", 
-                "ᴴᵒˣㅤＬ７ａｊㅤ⁰⁹", "اوســ亗ــڪارR‿ˣ ✌︎", "ضـ﹏ــايعㅤ♪ㅤبدونك", 
-                "sᴏᴍʙʀᴀ☂ 1%", "فخرㅤღㅤحلب", "DuXx Zz ?", "Zoom. 01x", 
-                "Universe FF?", "Junxor Zz ?", "Fars!ㅤZzㅤ?", "Jonaeid 01x", 
-                "Keplar 3x", "Universe NoXx", "! Hawa4. Pack", "⸙ Brxzz Zxt 모", 
-                "'mㅤnoT⸸k!g", "SancheZx! 모", "Z's DANGER", "Ꭾ!ꪎㅤZᴇʀᴏꪎㅤ¿?", 
-                "freestyleㅤ!?", "UɴκɴowɴㅤF!x", "Zzz Phobos №¹", "song name??", 
-                "Oolen San↑JI", "OnlyㅤM A T R I Xㅤ모", "Only Ziko", "XxㅤStyleㅤ¿?", 
-                "x7ㅤGareㅤZzz"
-            ];
-            let html = "أسماء برازيلية وعادية:<br>";
-            brazil.forEach(n => {
-                html += `<div class="style-row" onclick="copyText('${n}')"><span>${n}</span></div>`;
-            });
-            botReply(html);
-        } else if (val === "6") {
-            botReply("جاري توجيهك إلى صفحة التطبيقات... 🎨");
-            window.open("https://abdelahi-apps02.netlify.app/", "_blank");
-        } else {
-            let html = "أنماط الزخرفة لاسمك:<br>";
-            maps.forEach(m => {
-                let res = "";
-                let styleArray = Array.from(m);
-                for (let char of val) {
-                    let idx = alpha.indexOf(char);
-                    if (idx > -1) {
-                        res += styleArray[idx];
+
+                if (currentPoints < 120) {
+                    alert('عذراً، رصيدك غير كافٍ! تحتاج إلى 120 نقطة على الأقل.');
+                    return false;
+                }
+
+                const newPoints = currentPoints - 120;
+
+                // تحديث النقاط الجديدة في Firebase
+                const updateResponse = await fetch(firebaseUrl, {
+                    method: 'PUT',
+                    body: JSON.stringify(newPoints)
+                });
+
+                if (updateResponse.ok) {
+                    if (actionType === 'show') {
+                        // نسخ المعلومات تلقائياً إلى الحافظة عند العرض
+                        const accountInfo = `اسم المستخدم: ${username}\nكلمة المرور: ${password}`;
+                        navigator.clipboard.writeText(accountInfo).then(() => {
+                            alert(`تم خصم 120 نقطة بنجاح.\nتم نسخ معلومات الحساب إلى الحافظة!\n\n${accountInfo}`);
+                        }).catch(() => {
+                            alert(`تم خصم 120 نقطة بنجاح.\nاسم المستخدم: ${username}\nكلمة المرور: ${password}`);
+                        });
                     } else {
-                        let upperIdx = alpha.indexOf(char.toUpperCase());
-                        if (upperIdx > -1 && styleArray[upperIdx]) {
-                           res += styleArray[upperIdx];
-                        } else {
-                           res += char;
+                        alert(`تم خصم 120 نقطة بنجاح لشراء الحساب!`);
+                    }
+                    return true;
+                } else {
+                    alert('حدث خطأ أثناء تحديث النقاط، يرجى المحاولة مرة أخرى.');
+                    return false;
+                }
+            } catch (error) {
+                console.error('خطأ في الاتصال بقاعدة البيانات:', error);
+                alert('فشل الاتصال بالخادم.');
+                return false;
+            }
+        }
+
+        fetch('account.txt')
+            .then(response => response.text())
+            .then(data => {
+                const container = document.getElementById('storeContainer');
+                container.innerHTML = ''; // مسح أي محتوى افتراضي
+                
+                const lines = data.split('\n');
+                lines.forEach((line, index) => {
+                    const trimmedLine = line.trim();
+                    if (!trimmedLine) return; // تخطي الأسطر الفارغة
+                    
+                    const parts = trimmedLine.split(',');
+                    if (parts.length >= 3) {
+                        const username = parts[0].trim();
+                        const password = parts[1].trim();
+                        const iconUrl = parts[2].trim();
+                        const cardId = 'card_' + index;
+                        
+                        // التحقق من الحسابات المحذوفة أو التي تم الحصول عليها مسبقاً في هذا المتصفح
+                        if (localStorage.getItem('hidden_' + username)) {
+                            return; // تخطي هذا الحساب لكي لا يظهر مجدداً
+                        }
+
+                        // التحقق من توفر البيانات الأساسية
+                        if (username && password && iconUrl) {
+                            const card = document.createElement('div');
+                            card.className = 'app-card';
+                            card.id = cardId;
+                            card.innerHTML = `
+                                <div class="app-image-container">
+                                    <img src="${iconUrl}" alt="Account Image">
+                                </div>
+                                <div class="actions-container">
+                                    <input type="image" src="https://images.icon-icons.com/2065/PNG/96/view_show_icon_124811.png" alt="إظهار كلمة المرور" class="action-icon show-btn" data-username="${username}" data-password="${password}" data-action="show">
+                                    <input type="image" src="https://images.icon-icons.com/1580/PNG/96/2849824-basket-buy-market-multimedia-shop-shopping-store_107977.png" alt="شراء" class="action-icon buy-btn" data-username="${username}" data-password="${password}" data-action="buy">
+                                </div>
+                                <button class="delete-btn">حذف الحساب</button>
+                            `;
+                            
+                            const showIcon = card.querySelector('.show-btn');
+                            const buyIcon = card.querySelector('.buy-btn');
+                            const deleteBtn = card.querySelector('.delete-btn');
+
+                            // الحدث الخاص بزر الإظهار/النسخ
+                            showIcon.addEventListener('click', async function() {
+                                const action = this.getAttribute('data-action');
+                                const u = this.getAttribute('data-username');
+                                const p = this.getAttribute('data-password');
+                                const success = await deductPoints(action, u, p);
+                                if (success) {
+                                    // إظهار زر الحذف بمجرد نسخ/عرض معلومات الحساب بنجاح
+                                    deleteBtn.style.display = 'block';
+                                    showIcon.style.display = 'none'; // إخفاء أيقونة العرض لمنع التكرار
+                                }
+                            });
+
+                            // الحدث الخاص بزر الشراء
+                            buyIcon.addEventListener('click', async function() {
+                                const action = this.getAttribute('data-action');
+                                const u = this.getAttribute('data-username');
+                                const p = this.getAttribute('data-password');
+                                const success = await deductPoints(action, u, p);
+                                if (success) {
+                                    const accountInfo = `اسم المستخدم: ${u}\nكلمة المرور: ${p}`;
+                                    navigator.clipboard.writeText(accountInfo).catch(() => {});
+                                    deleteBtn.style.display = 'block';
+                                    buyIcon.style.display = 'none';
+                                }
+                            });
+
+                            // الحدث الخاص بزر الحذف لإخفاء الحساب نهائياً
+                            deleteBtn.addEventListener('click', function() {
+                                localStorage.setItem('hidden_' + username, 'true');
+                                card.style.transition = 'opacity 0.3s ease';
+                                card.style.opacity = '0';
+                                setTimeout(() => {
+                                    card.remove();
+                                }, 300);
+                            });
+
+                            container.appendChild(card);
                         }
                     }
-                }
-                html += `<div class="style-row" onclick="copyText('${res}')"><span>${res}</span></div>`;
-            });
-            botReply(html);
-        }
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
+                });
+            })
+            .catch(error => console.error('خطأ في قراءة ملف account.txt:', error));
+    </script>
 
-    inputField.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") send();
-    });
-</script>
 </body>
 </html>
-
