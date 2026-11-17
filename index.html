@@ -3,289 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر التطبيقات الداكن</title>
+    <title>واجهة سوداء</title>
     <style>
-        * {
-            box-sizing: border-box;
+        /* إعدادات الخلفية السوداء بالكامل */
+        body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        /* تنسيق العنوان وتأثير الألوان (ذهبي، فضي، وأبيض مضيء) مع الحركة */
-        header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ffffff, #d4af37, #c0c0c0, #ffffff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glowingText 4s ease infinite;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-        }
-
-        @keyframes glowingText {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .store-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .app-card {
-            background-color: #1e1e1e;
-            border-radius: 16px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-
-        .app-card:hover {
-            transform: translateY(-5px);
-            background-color: #2c2c2c;
-        }
-
-        /* تنسيق الصورة بدلاً من أسماء التطبيقات */
-        .app-image-container {
-            height: 60px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .app-image-container img {
-            max-height: 100%;
-            max-width: 100%;
-            border-radius: 8px;
-            object-fit: contain;
-        }
-
-        /* تنسيق الأيقونات الجديدة بدلاً من زر التثبيت */
-        .actions-container {
+            background-color: #000000;
             display: flex;
             justify-content: center;
-            gap: 15px;
-            align-items: center;
+            align-items: flex-start; /* التعديل هنا: وضع المحتوى في الأعلى بدلاً من المنتصف */
+            height: 100vh;
+            font-family: Arial, sans-serif;
         }
 
-        .action-icon {
-            width: 26px;
-            height: 26px;
-            cursor: pointer;
-            object-fit: contain;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .action-icon:hover {
-            transform: scale(1.15);
-            opacity: 0.85;
-        }
-
-        /* تنسيق زر الحذف الإضافي */
-        .delete-btn {
-            display: none;
-            margin-top: 10px;
+        /* الحاوية الرئيسية للتطبيق */
+        .app-container {
             width: 100%;
-            background-color: #d9534f;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 5px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
+            max-width: 400px;
+            height: 100%;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* التعديل هنا: محاذاة العناصر من الأعلى */
+            align-items: center;
+            gap: 20px;
+            padding-top: 40px; /* مسافة بسيطة من أعلى الشاشة */
         }
 
-        .delete-btn:hover {
-            background-color: #c9302c;
+        /* حاوية المربعات الثلاثة */
+        .boxes-wrapper {
+            display: flex;
+            gap: 25px; /* التعديل هنا: زيادة المسافة بين المربعات */
+            flex-wrap: wrap; /* للسماح بنزول المربعات الإضافية للسطر التالي إذا لزم الأمر */
+            justify-content: center;
+            max-width: 360px;
+        }
+
+        /* تصميم المربعات بحجم أصغر وفرق بينهما */
+        .small-box {
+            width: 55px;  /* التعديل هنا: تصغير حجم المربع إلى 55px */
+            height: 55px;
+            background-color: #1a1a1a; /* لون رمادي داكن يبرز فوق الأسود */
+            border: none; /* إزالة الحدود القديمة */
+            background-image: url('https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_Prime_AvatarFrame.png'); /* وضع إطار الصورة الجديد كخلفية للإطار */
+            background-size: 100% 100%; /* جعل الإطار يغطي المربع بالكامل */
+            background-repeat: no-repeat;
+            border-radius: 12px; /* تعديل طفيف للأركان الدائرية لتناسب الحجم */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s ease;
+            overflow: hidden; /* لضمان عدم خروج الصورة عن الأركان الدائرية للمربع */
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* تأثير خفيف عند لمس المربع */
+        .small-box:active {
+            background-color: #333333;
+        }
+
+        /* تنسيق الصورة داخل المربعات */
+        .small-box img.avatar-img {
+            position: absolute; /* جعل الصورة تأخذ وضعية الخلفية وراء الإطار */
+            width: 75%; /* ضبط الحجم لكي تختبئ تحت الإطار بشكل مناسب */
+            height: 75%;
+            object-fit: cover;
+            border-radius: 0; /* جعل الصورة بدون أركان دائرية */
+            z-index: 1; /* وضعها في طبقة خلفية */
+        }
+
+        /* تنسيق الشارة الجديدة بجانب الإطار داخل الأيقونة بحجم 25% */
+        .small-box img.badge-img {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 25%;
+            height: 25%;
+            object-fit: contain;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* ضمان ظهور الإطار فوق الصورة */
+        .small-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: inherit;
+            background-size: inherit;
+            background-repeat: inherit;
+            z-index: 2; /* وضع الإطار في طبقة أمامية فوق الصورة */
+            pointer-events: none;
+        }
+
+        /* تنسيق اللافتة الكبيرة (Modal) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 999;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: #111;
+            border: 1px solid #333;
+            width: 85%;
+            max-width: 320px;
+            padding: 25px 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+            color: #fff;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .modal-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #ffcc00;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            padding-bottom: 8px;
+        }
+        .info-row {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .info-row span.label {
+            color: #888;
+            font-size: 12px;
+        }
+        .info-row span.value {
+            color: #fff;
+            word-break: break-all;
+            font-family: monospace;
+        }
+        .close-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+        .close-btn:hover {
+            background-color: #444;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>GET AN FREE ACCOUNT</h1>
-    </header>
+    <div class="app-container">
+        <!-- المربعات (8 مربعات) -->
+        <div class="boxes-wrapper">
+            <div class="small-box">
+                <img class="avatar-img" src="https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg" alt="صورة">
+                <img class="badge-img" src="https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_PrimeBadage8.png" alt="شارة">
+            </div>
+            <div class="small-box">
+                <img class="avatar-img" src="https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg" alt="صورة">
+                <img class="badge-img" src="https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_PrimeBadage8.png" alt="شارة">
+            </div>
+            <div class="small-box">
+                <img class="avatar-img" src="https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg" alt="صورة">
+                <img class="badge-img" src="https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_PrimeBadage8.png" alt="شارة">
+            </div>
+            <div class="small-box">
+                <img class="avatar-img" src="https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg" alt="صورة">
+                <img class="badge-img" src="https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_PrimeBadage8.png" alt="شارة">
+            </div>
+            <div class="small-box">
+                <img class="avatar-img" src="https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg" alt="صورة">
+                <img class="badge-img" src="https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_PrimeBadage8.png" alt="شارة">
+            </div>
+            <div class="small-box">
+                <img class="avatar-img" src="https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg" alt="صورة">
+                <img class="badge-img" src="https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_PrimeBadage8.png" alt="شارة">
+            </div>
+            <div class="small-box">
+                <img class="avatar-img" src="https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg" alt="صورة">
+                <img class="badge-img" src="https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_PrimeBadage8.png" alt="شارة">
+            </div>
+            <div class="small-box">
+                <img class="avatar-img" src="https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg" alt="صورة">
+                <img class="badge-img" src="https://raw.githubusercontent.com/0xme/ff-resources/refs/heads/main/pngs/300x300/FF_UI_PrimeBadage8.png" alt="شارة">
+            </div>
+        </div>
+    </div>
 
-    <div class="store-container" id="storeContainer">
-        <!-- سيتم توليد البطاقات ديناميكياً هنا -->
+    <!-- اللافتة الكبيرة (Modal) لعرض معلومات الحساب -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <h3>معلومات الحساب</h3>
+            <div class="info-row">
+                <span class="label">USER NAME</span>
+                <span id="modalUser" class="value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="label">PASSWORD</span>
+                <span id="modalPass" class="value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="label">TOKEN ACCOUNT</span>
+                <span id="modalToken" class="value">-</span>
+            </div>
+            <button class="close-btn" onclick="closeModal()">إغلاق</button>
+        </div>
     </div>
 
     <script>
-        // دالة للحصول على معرف فريد للجهاز أو إنشاؤه وتخزينه
-        function getDeviceId() {
-            let deviceId = localStorage.getItem('device_unique_id');
-            if (!deviceId) {
-                deviceId = 'device_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                localStorage.setItem('device_unique_id', deviceId);
-            }
-            return deviceId;
-        }
+        let accountsData = [];
 
-        // دالة لخصم النقاط من قاعدة بيانات Firebase
-        async function deductPoints(actionType, username, password) {
-            const deviceId = getDeviceId();
-            const safeDeviceId = deviceId.replace(/[^a-zA-Z0-9_-]/g, '_');
-            const firebaseUrl = `https://ff-2022-633ed-default-rtdb.firebaseio.com/devices/${safeDeviceId}/points.json`;
-
+        async function loadAccountsFile() {
             try {
-                const response = await fetch(firebaseUrl);
-                let currentPoints = await response.json();
-
-                if (currentPoints === null) {
-                    currentPoints = 500; // رصيد افتراضي للاختبار
-                }
-
-                if (currentPoints < 120) {
-                    alert(`عذراً، رصيدك غير كافٍ!\nرصيدك الحالي هو: ${currentPoints} نقطة\nتحتاج إلى 120 نقطة على الأقل.`);
-                    return false;
-                }
-
-                // سؤال المستخدم أولاً إذا كان يريد إتمام عملية الشراء والخصم أم لا
-                const confirmBuy = confirm(`رصيدك الحالي هو: ${currentPoints} نقطة.\nهل تريد حقاً خصم 120 نقطة لإتمام العملية؟`);
-                if (!confirmBuy) {
-                    return false; // إلغاء العملية إذا لم يوافق المستخدم
-                }
-
-                const newPoints = currentPoints - 120;
-
-                const updateResponse = await fetch(firebaseUrl, {
-                    method: 'PUT',
-                    body: JSON.stringify(newPoints)
-                });
-
-                if (updateResponse.ok) {
-                    if (actionType === 'show') {
-                        const accountInfo = `اسم المستخدم: ${username}\nكلمة المرور: ${password}`;
-                        navigator.clipboard.writeText(accountInfo).then(() => {
-                            alert(`تم خصم 120 نقطة بنجاح.\nتم نسخ معلومات الحساب إلى الحافظة!\n\n${accountInfo}`);
-                        }).catch(() => {
-                            alert(`تم خصم 120 نقطة بنجاح.\nاسم المستخدم: ${username}\nكلمة المرور: ${password}`);
-                        });
-                    } else {
-                        alert(`تم خصم 120 نقطة بنجاح لشراء الحساب!`);
-                    }
-                    return true;
-                } else {
-                    alert('حدث خطأ أثناء تحديث النقاط، يرجى المحاولة مرة أخرى.');
-                    return false;
-                }
+                const response = await fetch('account.vip.txt');
+                const text = await response.text();
+                parseAccounts(text);
             } catch (error) {
-                console.error('خطأ في الاتصال بقاعدة البيانات:', error);
-                alert('فشل الاتصال بالخادم.');
-                return false;
+                // بيانات افتراضية بالتنسيق الجديد في حال لم يتم رفع الملف محلياً بعد
+                const fallbackText = `
+1: USER NAME: Venom_DZ_1 . PASSWORD: pass_001_secure . TOKEN: tok_live_998123746501
+2: USER NAME: Venom_DZ_2 . PASSWORD: pass_002_secure . TOKEN: tok_live_887234651902
+3: USER NAME: Venom_DZ_3 . PASSWORD: pass_003_secure . TOKEN: tok_live_776345762803
+4: USER NAME: Venom_DZ_4 . PASSWORD: pass_004_secure . TOKEN: tok_live_665456873704
+5: USER NAME: Venom_DZ_5 . PASSWORD: pass_005_secure . TOKEN: tok_live_554567984605
+6: USER NAME: Venom_DZ_6 . PASSWORD: pass_006_secure . TOKEN: tok_live_443678095506
+7: USER NAME: Venom_DZ_7 . PASSWORD: pass_007_secure . TOKEN: tok_live_332789106407
+8: USER NAME: Venom_DZ_8 . PASSWORD: pass_008_secure . TOKEN: tok_live_221890217308
+                `;
+                parseAccounts(fallbackText);
             }
         }
 
-        // قائمة الحسابات مباشرة (يمكنك إدراج حساباتك هنا بسهولة تامة)
-        const accountsData = `
-        Abdullah,123123147147,https://i.ibb.co/fVBvNmpm/924eb361-30d6-4a98-bc0f-82c8c33836a5.jpg
-        `;
+        function parseAccounts(dataText) {
+            const lines = dataText.split(/\r?\n/).filter(line => line.trim() !== '');
+            accountsData = lines.map(line => {
+                const userMatch = line.match(/USER\s*NAME[:\s]+([^.]+)/i);
+                const passMatch = line.match(/PASSWORD[:\s]+([^.]+)/i);
+                const tokenMatch = line.match(/TOKEN(?:_ACCOUNT)?[:\s]+([^\r\n]+)/i);
 
-        function loadStore() {
-            const container = document.getElementById('storeContainer');
-            container.innerHTML = '';
-            
-            const lines = accountsData.split('\n');
-            lines.forEach((line, index) => {
-                const trimmedLine = line.trim();
-                if (!trimmedLine) return;
-                
-                const parts = trimmedLine.split(',');
-                if (parts.length >= 3) {
-                    const username = parts[0].trim();
-                    const password = parts[1].trim();
-                    const iconUrl = parts[2].trim();
-                    const cardId = 'card_' + index;
-                    
-                    if (localStorage.getItem('hidden_' + username)) {
-                        return; // إخفاء الحساب إذا تم استخدامه مسبقاً من هذا المتصفح
-                    }
-
-                    if (username && password && iconUrl) {
-                        const card = document.createElement('div');
-                        card.className = 'app-card';
-                        card.id = cardId;
-                        card.innerHTML = `
-                            <div class="app-image-container">
-                                <img src="${iconUrl}" alt="Account Image">
-                            </div>
-                            <div class="actions-container">
-                                <input type="image" src="https://images.icon-icons.com/2065/PNG/96/view_show_icon_124811.png" alt="إظهار كلمة المرور" class="action-icon show-btn" data-username="${username}" data-password="${password}" data-action="show">
-                                <input type="image" src="https://images.icon-icons.com/1580/PNG/96/2849824-basket-buy-market-multimedia-shop-shopping-store_107977.png" alt="شراء" class="action-icon buy-btn" data-username="${username}" data-password="${password}" data-action="buy">
-                            </div>
-                            <button class="delete-btn">حذف الحساب</button>
-                        `;
-                        
-                        const showIcon = card.querySelector('.show-btn');
-                        const buyIcon = card.querySelector('.buy-btn');
-                        const deleteBtn = card.querySelector('.delete-btn');
-
-                        showIcon.addEventListener('click', async function() {
-                            const action = this.getAttribute('data-action');
-                            const u = this.getAttribute('data-username');
-                            const p = this.getAttribute('data-password');
-                            const success = await deductPoints(action, u, p);
-                            if (success) {
-                                deleteBtn.style.display = 'block';
-                                showIcon.style.display = 'none';
-                            }
-                        });
-
-                        buyIcon.addEventListener('click', async function() {
-                            const action = this.getAttribute('data-action');
-                            const u = this.getAttribute('data-username');
-                            const p = this.getAttribute('data-password');
-                            const success = await deductPoints(action, u, p);
-                            if (success) {
-                                const accountInfo = `اسم المستخدم: ${u}\nكلمة المرور: ${p}`;
-                                navigator.clipboard.writeText(accountInfo).catch(() => {});
-                                deleteBtn.style.display = 'block';
-                                buyIcon.style.display = 'none';
-                            }
-                        });
-
-                        deleteBtn.addEventListener('click', function() {
-                            localStorage.setItem('hidden_' + username, 'true');
-                            card.style.transition = 'opacity 0.3s ease';
-                            card.style.opacity = '0';
-                            setTimeout(() => {
-                                card.remove();
-                            }, 300);
-                        });
-
-                        container.appendChild(card);
-                    }
-                }
+                return {
+                    username: userMatch ? userMatch[1].trim() : 'غير متوفر',
+                    password: passMatch ? passMatch[1].trim() : 'غير متوفر',
+                    token: tokenMatch ? tokenMatch[1].trim() : 'غير متوفر'
+                };
             });
         }
 
-        // تشغيل التحميل عند فتح الصفحة
-        loadStore();
-    </script>
+        const boxes = document.querySelectorAll('.small-box');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalUser = document.getElementById('modalUser');
+        const modalPass = document.getElementById('modalPass');
+        const modalToken = document.getElementById('modalToken');
 
+        boxes.forEach((box, index) => {
+            box.addEventListener('click', () => {
+                const acc = accountsData[index] || {
+                    username: 'Venom_DZ_' + (index + 1),
+                    password: 'Protected_Password_' + (index + 1),
+                    token: 'tok_default_' + Math.random().toString(36).substring(2)
+                };
+
+                modalUser.textContent = acc.username;
+                modalPass.textContent = acc.password;
+                modalToken.textContent = acc.token;
+
+                modalOverlay.classList.add('show');
+            });
+        });
+
+        function closeModal() {
+            modalOverlay.classList.remove('show');
+        }
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        loadAccountsFile();
+    </script>
 </body>
 </html>
