@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GET AN FREE ACCOUNT</title>
+    <title>𝐆𝐄𝐓 𝐀𝐍 𝐅𝐑𝐄𝐄 𝐀𝐂𝐂𝐎𝐔𝐍𝐓</title>
     <style>
         * {
             box-sizing: border-box;
@@ -23,10 +23,23 @@
             margin-bottom: 30px;
         }
 
+        /* تنسيق العنوان وتأثير الألوان (ذهبي، فضي، وأبيض مضيء) مع الحركة */
         header h1 {
-            color: #ffffff;
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 10px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffffff, #d4af37, #c0c0c0, #ffffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glowingText 4s ease infinite;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes glowingText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .store-container {
@@ -147,8 +160,14 @@
                 }
 
                 if (currentPoints < 120) {
-                    alert('عذراً، رصيدك غير كافٍ! تحتاج إلى 120 نقطة على الأقل.');
+                    alert(`عذراً، رصيدك غير كافٍ!\nرصيدك الحالي هو: ${currentPoints} نقطة\nتحتاج إلى 120 نقطة على الأقل.`);
                     return false;
+                }
+
+                // سؤال المستخدم أولاً إذا كان يريد إتمام عملية الشراء والخصم أم لا
+                const confirmBuy = confirm(`رصيدك الحالي هو: ${currentPoints} نقطة.\nهل تريد حقاً خصم 120 نقطة لإتمام العملية؟`);
+                if (!confirmBuy) {
+                    return false; // إلغاء العملية إذا لم يوافق المستخدم
                 }
 
                 const newPoints = currentPoints - 120;
@@ -269,5 +288,4 @@
     </script>
 
 </body>
-    </html>
-    
+</html>
